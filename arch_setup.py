@@ -25,7 +25,7 @@ def pkg_install(*packages:list[str]):
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
-    term(['yay', '-S', '--needed'] + list(packages))
+    term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
