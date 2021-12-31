@@ -68,6 +68,7 @@ def main():
 
     # additional cool programs
     pkg_install('gnome-calculator')
+    pkg_install('qbittorrent')
 
 if __name__ == '__main__':
     main()
