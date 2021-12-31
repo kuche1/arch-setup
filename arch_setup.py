@@ -5,6 +5,7 @@ import shlex
 import os
 import datetime
 import tempfile
+import shutil
 
 HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
