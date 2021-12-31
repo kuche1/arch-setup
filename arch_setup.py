@@ -10,6 +10,9 @@ HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 
+def get_backup_name(path):
+    return path + ' backup ' + str(datetime.datetime.today())
+
 def term(cmds:list):
     cmd = shlex.join(cmds)
     subprocess.run(cmd, shell=True, check=True)
@@ -22,8 +25,8 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed'] + list(packages))
 
-def get_backup_name(path):
-    return path + ' backup ' + str(datetime.datetime.today())
+def sudo_mv(from_, to):
+    term(['sudo', 'mv', from_, to])
 
 def backup_folder(path):
     assert not os.path.isfile(path)
@@ -35,7 +38,7 @@ def sudo_backup_file(path):
     assert not os.path.isdir(path)
     if os.path.isfile(path):
         newname = get_backup_name(path)
-        term(['sudo', 'mv', path, newname])
+        sudo_mv(path, newname)
 
 def main():
 
@@ -51,7 +54,7 @@ Section "InputClass"
 EndSection
 ''')
         name = f.name
-    sudo_move(name, MOUSE_ACCEL_PATH)
+    sudo_mv(name, MOUSE_ACCEL_PATH)
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
@@ -92,7 +95,7 @@ EndSection
         f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
         f.write('QT_STYLE_OVERRIDE=gtk\n')
         name = f.name
-    sudo_move(name, ENVIRONMENT_PATH)
+    sudo_mv(name, ENVIRONMENT_PATH)
 
     # additional cool programs
     pkg_install('gnome-calculator')
