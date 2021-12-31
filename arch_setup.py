@@ -70,6 +70,8 @@ def replace_folder(to_replace, with_):
 
 def main():
 
+    pkg_install('micro') # text editor
+
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('''
@@ -93,6 +95,9 @@ EndSection
         f.write(cont)
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
+
+    # shell
+    #TODO
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
@@ -130,7 +135,6 @@ EndSection
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
     # additional programs
-    pkg_install('micro') # text editor
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
     aur_install('librewolf-bin') # browser
