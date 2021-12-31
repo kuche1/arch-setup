@@ -21,7 +21,7 @@ def term(cmds:list):
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
-    term(['sudo', 'pacman', '-S', '--needed'] + list(packages))
+    term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
