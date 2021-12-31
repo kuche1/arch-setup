@@ -94,7 +94,11 @@ EndSection
         cont = f.read()
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         toreplace = '\n#MAKEFLAGS="-j2"\n'
-        assert cont.count(toreplace) == 1
+        if cont.count(toreplace) != 1:
+            print('==========')
+            print('WARNING: MAKEFLAGS seems to have already been set.')
+            print('==========')
+            input('Press enter to continue')
         cont = cont.replace(toreplace, '\nMAKEFLAGS="-j$(nproc)"\n')
         f.write(cont)
         name = f.name
