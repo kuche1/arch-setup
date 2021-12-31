@@ -70,7 +70,7 @@ def replace_folder(to_replace, with_):
 
 def main():
 
-    pkg_install('micro') # text editor
+    pkg_install('micro', 'xclip') # text editor
 
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
