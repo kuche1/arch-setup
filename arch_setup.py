@@ -92,7 +92,7 @@ EndSection
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         toreplace = '#MAKEFLAGS="-j2"'
         assert cont.count(toreplace) == 1
-        cont.replace(toreplace, 'MAKEFLAGS="-j$(nproc)"')
+        cont = cont.replace(toreplace, 'MAKEFLAGS="-j$(nproc)"')
         f.write(cont)
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
@@ -155,7 +155,7 @@ EndSection
     if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
     else: mode = 'a'
     with open(VMWARE_PREFERENCES_PATH, mode) as f:
-        f.wrtie('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
+        f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
 if __name__ == '__main__':
     main()
