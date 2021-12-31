@@ -4,8 +4,10 @@ import subprocess
 import shlex
 import os
 import datetime
+import tempfile
 
 HERE == os.path.dirname(__file__) + '/'
+ENVIRONMENT_PATH = '/etc/environment'
 
 def term(cmds:list):
     cmd = shlex.join(cmds)
@@ -16,6 +18,16 @@ def pkg_install(*packages:list[str]):
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     term(['yay', '-S', '--needed'] + packages)
+
+def backup_folder(path):
+    if os.path.isdir(path):
+        newname = path + ' backup ' + datetime.datetime.today()\
+        newname = get_backup_name(path)
+        shutil.move(path, newname)
+
+def sudo_backup_file(path):
+    newname = get_backup_name(path)
+    term(['sudo', 'mv', path, newname])
 
 def main():
 
@@ -41,11 +53,21 @@ def main():
         for fol in fols:
             source = dir_+'/'+fol
             target = os.path.expanduser('~/.config/') + fol
-            if os.path.isdir(target):
-                newname = fol + ' backup ' + datetime.datetime.today()
-                shutil.movetree(target, newname)
+            backup_folder(target)
+            shutil.rmtree(target)
             shutil.copytree(source, target)
         break
+
+    # unify theme
+    sudo_backup_file(ENVIRONMENT_PATH)
+    with tempfile.NamedTemporaryFile('w', delete=False) as f:
+        f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
+        f.write('QT_STYLE_OVERRIDE=gtk\n')
+        name = f.name
+    sudo_move(name, ENVIRONMENT_PATH)
+
+    # additional cool programs
+    pkg_install('gnome-calculator')
 
 if __name__ == '__main__':
     main()
