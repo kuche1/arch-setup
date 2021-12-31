@@ -90,15 +90,16 @@ EndSection
     with open(MAKEPKG_CONF_PATH, 'r') as f:
         cont = f.read()
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
-        toreplace = '#MAKEFLAGS="-j2"'
+        toreplace = '\n#MAKEFLAGS="-j2"\n'
         assert cont.count(toreplace) == 1
-        cont = cont.replace(toreplace, 'MAKEFLAGS="-j$(nproc)"')
+        cont = cont.replace(toreplace, '\nMAKEFLAGS="-j$(nproc)"\n')
         f.write(cont)
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
 
     # shell
-    #TODO
+    pkg_install('fish')
+    term(['chsh', '-s' ,'$(which fish)'])
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
