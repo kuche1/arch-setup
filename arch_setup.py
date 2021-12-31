@@ -84,8 +84,8 @@ EndSection
     sudo_replace_file(MOUSE_ACCEL_PATH, name)
 
     # compilation threads
-    with open(MAKEPKG_CONF_PATH, 'r') as source:
-        cont = source.read()
+    with open(MAKEPKG_CONF_PATH, 'r') as f:
+        cont = f.read()
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         toreplace = '#MAKEFLAGS="-j2"'
         assert cont.count(toreplace) == 1
@@ -122,20 +122,22 @@ EndSection
             replace_folder(target, source)
         break
 
-    # unify theme # TODO append instead of overwrite
+    # unify theme # TODO? append instead of overwrite
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
         f.write('QT_STYLE_OVERRIDE=gtk\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
+    # additional programs
+    pkg_install('micro') # text editor
+    pkg_install('gnome-calculator') # calculator
+    pkg_install('qbittorrent') # torrent client
+    aur_install('librewolf-bin') # browser
+    pkg_install('vlc') # video player
+
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
-
-    # additional cool programs
-    pkg_install('gnome-calculator')
-    pkg_install('qbittorrent')
-    # TODO install librewolf
 
     # vmware
     aur_install('vmware-workstation')
