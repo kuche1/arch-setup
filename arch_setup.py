@@ -6,7 +6,7 @@ import os
 import datetime
 import tempfile
 
-HERE == os.path.dirname(__file__) + '/'
+HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
 
 def term(cmds:list):
