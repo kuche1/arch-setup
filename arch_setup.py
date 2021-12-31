@@ -69,7 +69,13 @@ def main():
     # additional cool programs
     pkg_install('gnome-calculator')
     pkg_install('qbittorrent')
-    aur_install('vmware-workstation') # TODO deal with video drivers
+
+    aur_install('vmware-workstation')
+    term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
+    term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
+    term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
+    with open(os.path.expanduser('~/.vmware/preferences'), 'a') as f:
+        f.wrtie('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
 if __name__ == '__main__':
     main()
