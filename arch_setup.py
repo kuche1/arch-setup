@@ -86,11 +86,11 @@ EndSection
     # compilation threads
     with open(MAKEPKG_CONF_PATH, 'r') as source:
         cont = source.read()
-    with tempfile.NamedTemporaryFile('w', delete=False) as dest:
+    with tempfile.NamedTemporaryFile('w', delete=False) as f:
         toreplace = '#MAKEFLAGS="-j2"'
         assert cont.count(toreplace) == 1
         cont.replace(toreplace, 'MAKEFLAGS="-j$(nproc)"')
-        dest.write(cont)
+        f.write(cont)
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
 
