@@ -46,7 +46,7 @@ def backup_folder(path):
     assert not os.path.isfile(path)
     if os.path.isdir(path):
         newname = get_backup_name(path)
-        shutil.copy_tree(path, newname)
+        shutil.copytree(path, newname)
 
 def sudo_delete_file(path):
     assert not os.path.isdir(path)
