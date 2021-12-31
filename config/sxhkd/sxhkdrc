@@ -43,15 +43,25 @@ alt + f
 Print
 	spectacle --region
 
+### keyboard languages
+
+alt + shift + b:
+	setxkbmap bg bas_phoneticB
+
+alt + shift + {e,u}:
+	setxkbmap us
+
+### volume control
+
 XF86Audio{RaiseVolume,Next}
 	pulsemixer --change-volume {+,+}5
+#	amixer -q set Master 5%+ unmute
 #	pactl set-sink-volume 0 +5{%,%}
-#   amixer -q set Master 5%+ unmute
 
 XF86Audio{LowerVolume,Prev}
 	pulsemixer --change-volume {-,-}5
+#	amixer -q set Master 5%- unmute
 #	pactl set-sink-volume 0 -5{%,%}
-#   amixer -q set Master 5%- unmute
 
 XF86{AudioPlay,Calculator}
 	pulsemixer --set-volume {35,100}
