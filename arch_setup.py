@@ -61,7 +61,7 @@ def delete_folder(path):
         shutil.rmtree(path)
 
 def sudo_replace_file(to_replace, with_):
-    sudo_delete_file(to_replace)
+    sudo_backup_file(to_replace)
     sudo_cp(with_, to_replace)
 
 def replace_folder(to_replace, with_):
