@@ -102,7 +102,7 @@ EndSection
 
     # shell
     pkg_install('fish')
-    term_raw('chsh -s $(which fish)'])
+    term_raw('chsh -s $(which fish)')
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
