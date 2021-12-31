@@ -49,8 +49,10 @@ def backup_folder(path):
         shutil.copy_tree(path, newname)
 
 def sudo_delete_file(path):
-    sudo_backup_file(path)
-    sudo_rm(path)
+    assert not os.path.isdir(path)
+    if os.path.isfile(path):
+        sudo_backup_file(path)
+        sudo_rm(path)
 
 def delete_folder(path):
     assert not os.path.isfile(path)
@@ -133,6 +135,7 @@ EndSection
     # additional cool programs
     pkg_install('gnome-calculator')
     pkg_install('qbittorrent')
+    # TODO install librewolf
 
     # vmware
     aur_install('vmware-workstation')
