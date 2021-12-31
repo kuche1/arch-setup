@@ -150,6 +150,8 @@ EndSection
     term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
     term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
     term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
+    if not os.path.isdir(os.path.dirname(VMWARE_PREFERENCES_PATH)):
+        os.mkdirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
     if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
     else: mode = 'a'
     with open(VMWARE_PREFERENCES_PATH, mode) as f:
