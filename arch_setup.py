@@ -15,6 +15,12 @@ MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
+def warning(info:str):
+    print('====================')
+    print(f'WARNING: {info}')
+    print('====================')
+    input('Press enter to continue')
+
 def term_raw(cmd:str):
     subprocess.run(cmd, shell=True, check=True)
 
@@ -95,10 +101,7 @@ EndSection
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         toreplace = '\n#MAKEFLAGS="-j2"\n'
         if cont.count(toreplace) != 1:
-            print('==========')
-            print('WARNING: MAKEFLAGS seems to have already been set.')
-            print('==========')
-            input('Press enter to continue')
+            warning('MAKEFLAGS seems to have already been set. This happens when you run this script a second time, or if you change the variable manually.')
         cont = cont.replace(toreplace, '\nMAKEFLAGS="-j$(nproc)"\n')
         f.write(cont)
         name = f.name
