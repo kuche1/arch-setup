@@ -14,11 +14,11 @@ def term(cmds:list):
     subprocess.run(cmd, shell=True, check=True)
 
 def pkg_install(*packages:list[str]):
-    assert type(packages) not str
+    assert type(packages) != str
     term(['sudo', 'pacman', '-S', '--needed'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
-    assert type(packages) not str
+    assert type(packages) != str
     term(['yay', '-S', '--needed'] + list(packages))
 
 def backup_folder(path):
