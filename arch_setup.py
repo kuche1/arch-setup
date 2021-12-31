@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+# TODO grub timeout
+
 import subprocess
 import shlex
 import os
