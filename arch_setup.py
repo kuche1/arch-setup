@@ -31,6 +31,9 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
 def sudo_mv(from_, to):
     term(['sudo', 'mv', from_, to])
 
+def sudo_cp(from_, to):
+    term(['sudo', 'cp', from_, to])
+
 def delete_folder(path):
     assert not os.path.isfile(path)
     if os.path.isdir(path):
@@ -46,7 +49,7 @@ def sudo_backup_file(path):
     assert not os.path.isdir(path)
     if os.path.isfile(path):
         newname = get_backup_name(path)
-        sudo_mv(path, newname)
+        sudo_cp(path, newname)
 
 def main():
 
