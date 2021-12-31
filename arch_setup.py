@@ -15,9 +15,12 @@ MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
+def term_raw(cmd:str):
+    subprocess.run(cmd, shell=True, check=True)
+
 def term(cmds:list):
     cmd = shlex.join(cmds)
-    subprocess.run(cmd, shell=True, check=True)
+    term_raw(cmd)
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
@@ -99,7 +102,7 @@ EndSection
 
     # shell
     pkg_install('fish')
-    term(['chsh', '-s' ,'$(which fish)'])
+    term_raw('chsh -s $(which fish)'])
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
