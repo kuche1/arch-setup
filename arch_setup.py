@@ -29,6 +29,11 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
 def sudo_mv(from_, to):
     term(['sudo', 'mv', from_, to])
 
+def delete_folder(path):
+    assert not os.path.isfile(path)
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+
 def backup_folder(path):
     assert not os.path.isfile(path)
     if os.path.isdir(path):
@@ -83,7 +88,7 @@ EndSection
             source = dir_+'/'+fol
             target = os.path.expanduser('~/.config/') + fol
             backup_folder(target)
-            shutil.rmtree(target)
+            delete_folder(target)
             shutil.copytree(source, target)
         break
 
