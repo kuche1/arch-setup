@@ -69,7 +69,7 @@ def main():
     # additional cool programs
     pkg_install('gnome-calculator')
     pkg_install('qbittorrent')
-    # TODO vmware
+    aur_install('vmware-workstation') # TODO deal with video drivers
 
 if __name__ == '__main__':
     main()
