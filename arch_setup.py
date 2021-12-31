@@ -70,7 +70,8 @@ def replace_folder(to_replace, with_):
 
 def main():
 
-    pkg_install('micro', 'xclip') # text editor
+    # terminal text editor, debugging
+    pkg_install('micro', 'xclip')
 
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
@@ -128,6 +129,7 @@ EndSection
         break
 
     # unify theme # TODO? append instead of overwrite
+    aur_install('qt5-styleplugins')
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
         f.write('QT_STYLE_OVERRIDE=gtk\n')
