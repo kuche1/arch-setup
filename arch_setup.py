@@ -10,6 +10,8 @@ import shutil
 HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
+MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
+VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
 def get_backup_name(path):
     return path + ' backup ' + str(datetime.datetime.today())
@@ -62,6 +64,16 @@ EndSection
         name = f.name
     sudo_mv(name, MOUSE_ACCEL_PATH)
 
+    # compilation threads
+    sudo_backup_file(MAKEPKG_CONF_PATH)
+    with open(MAKEPKG_CONF_PATH, 'r') as source:
+        with tempfile.NamedTemporaryFile('w', delete=False) as dest:
+            cont = source.read()
+            cont.replace('#MAKEFLAGS="-j2"', 'MAKEFLAGS="-j$(nproc)"')
+            dest.write(cont)
+            name = f.name
+    sudo_mv(dest, MAKEPKG_CONF_PATH)
+
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
 
@@ -107,11 +119,14 @@ EndSection
     pkg_install('gnome-calculator')
     pkg_install('qbittorrent')
 
+    # vmware
     aur_install('vmware-workstation')
     term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
     term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
     term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
-    with open(os.path.expanduser('~/.vmware/preferences'), 'a') as f:
+    if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
+    else: mode = 'a'
+    with open(VMWARE_PREFERENCES_PATH, mode) as f:
         f.wrtie('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
 if __name__ == '__main__':
