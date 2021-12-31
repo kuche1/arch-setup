@@ -65,7 +65,7 @@ def sudo_replace_file(to_replace, with_):
     sudo_cp(with_, to_replace)
 
 def replace_folder(to_replace, with_):
-    delete_folder(target)
+    delete_folder(to_replace)
     shutil.copytree(with_, to_replace)
 
 def main():
