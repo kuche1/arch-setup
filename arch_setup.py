@@ -22,9 +22,11 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed'] + list(packages))
 
+def get_backup_name(path):
+    return path + ' backup ' + str(datetime.datetime.today())
+
 def backup_folder(path):
     if os.path.isdir(path):
-        newname = path + ' backup ' + datetime.datetime.today()
         newname = get_backup_name(path)
         shutil.move(path, newname)
 
