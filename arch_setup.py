@@ -13,9 +13,6 @@ MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
-def get_backup_name(path):
-    return path + ' backup ' + str(datetime.datetime.today())
-
 def term(cmds:list):
     cmd = shlex.join(cmds)
     subprocess.run(cmd, shell=True, check=True)
@@ -28,22 +25,14 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed'] + list(packages))
 
-def sudo_mv(from_, to):
-    term(['sudo', 'mv', from_, to])
-
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
 
-def delete_folder(path):
-    assert not os.path.isfile(path)
-    if os.path.isdir(path):
-        shutil.rmtree(path)
+def sudo_rm(path):
+    term(['sudo', 'rm', path])
 
-def backup_folder(path):
-    assert not os.path.isfile(path)
-    if os.path.isdir(path):
-        newname = get_backup_name(path)
-        shutil.copy_tree(path, newname)
+def get_backup_name(path):
+    return path + ' backup ' + str(datetime.datetime.today())
 
 def sudo_backup_file(path):
     assert not os.path.isdir(path)
@@ -51,10 +40,33 @@ def sudo_backup_file(path):
         newname = get_backup_name(path)
         sudo_cp(path, newname)
 
+def backup_folder(path):
+    assert not os.path.isfile(path)
+    if os.path.isdir(path):
+        newname = get_backup_name(path)
+        shutil.copy_tree(path, newname)
+
+def sudo_delete_file(path):
+    sudo_backup_file(path)
+    sudo_rm(path)
+
+def delete_folder(path):
+    assert not os.path.isfile(path)
+    if os.path.isdir(path):
+        backup_folder(path)
+        shutil.rmtree(path)
+
+def sudo_replace_file(to_replace, with_):
+    sudo_delete_file(to_replace)
+    sudo_cp(with_, to_replace)
+
+def replace_folder(to_replace, with_):
+    delete_folder(target)
+    shutil.copytree(with_, to_replace)
+
 def main():
 
     # mouse accel
-    sudo_backup_file(MOUSE_ACCEL_PATH)
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('''
 Section "InputClass"
@@ -65,17 +77,18 @@ Section "InputClass"
 EndSection
 ''')
         name = f.name
-    sudo_mv(name, MOUSE_ACCEL_PATH)
+    sudo_replace_file(MOUSE_ACCEL_PATH, name)
 
     # compilation threads
-    sudo_backup_file(MAKEPKG_CONF_PATH)
     with open(MAKEPKG_CONF_PATH, 'r') as source:
-        with tempfile.NamedTemporaryFile('w', delete=False) as dest:
-            cont = source.read()
-            cont.replace('#MAKEFLAGS="-j2"', 'MAKEFLAGS="-j$(nproc)"')
-            dest.write(cont)
-            name = f.name
-    sudo_mv(dest, MAKEPKG_CONF_PATH)
+        cont = source.read()
+    with tempfile.NamedTemporaryFile('w', delete=False) as dest:
+        toreplace = '#MAKEFLAGS="-j2"'
+        assert cont.count(toreplace) == 1
+        cont.replace(toreplace, 'MAKEFLAGS="-j$(nproc)"')
+        dest.write(cont)
+        name = f.name
+    sudo_replace_file(MAKEPKG_CONF_PATH, name)
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
@@ -102,18 +115,15 @@ EndSection
         for fol in fols:
             source = dir_+'/'+fol
             target = os.path.expanduser('~/.config/') + fol
-            backup_folder(target)
-            delete_folder(target)
-            shutil.copytree(source, target)
+            replace_folder(target, source)
         break
 
-    # unify theme
-    sudo_backup_file(ENVIRONMENT_PATH)
+    # unify theme # TODO append instead of overwrite
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
         f.write('QT_STYLE_OVERRIDE=gtk\n')
         name = f.name
-    sudo_mv(name, ENVIRONMENT_PATH)
+    sudo_replace_file(ENVIRONMENT_PATH, name)
 
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
