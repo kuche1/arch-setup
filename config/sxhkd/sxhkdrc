@@ -46,7 +46,9 @@ Print
 ### keyboard languages
 
 alt + shift + b:
-	setxkbmap bg bas_phoneticB
+	setxkbmap bg phonetic
+#	setxkbmap bg bas_phonetic
+#	setxkbmap bg bas_phoneticB # tva typo li e ili sa go mahnali?
 
 alt + shift + {e,u}:
 	setxkbmap us
