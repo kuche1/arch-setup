@@ -22,9 +22,11 @@ def warning(info:str):
     input('Press enter to continue')
 
 def term_raw(cmd:str):
+    assert type(cmd) == str
     subprocess.run(cmd, shell=True, check=True)
 
 def term(cmds:list):
+    assert type(cmds) in (list, tuple)
     cmd = shlex.join(cmds)
     term_raw(cmd)
 
@@ -43,7 +45,7 @@ def sudo_rm(path):
     term(['sudo', 'rm', path])
 
 def get_backup_name(path):
-    return path + ' backup ' + str(datetime.datetime.today())
+    return path + '-backup-' + str(datetime.datetime.today())
 
 def sudo_backup_file(path):
     assert not os.path.isdir(path)
@@ -147,15 +149,23 @@ EndSection
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
+    # generate ssh keys
+    pkg_install('openssh') # TODO check for alternative
+    term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
+
     # additional programs
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
     aur_install('librewolf-bin') # browser
     pkg_install('vlc') # video player
-    aur_install('pirate-get')
+    aur_install('pirate-get') # torrent browser
+    pkg_install('tigervnc') # vnc
 
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
+
+    # kernel
+    pkg_install('linux-zen', 'linux-zen-headers')
 
     # vmware
     aur_install('vmware-workstation')
