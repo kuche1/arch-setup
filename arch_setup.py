@@ -92,7 +92,7 @@ def sudo_replace_string(file, to_replace, with_):
             case _:
                 warning(f'Variable in file ({file}) found more than one. This is an error.')
                 sys.exit(1)
-        cont = cont.replace(to_replace, '\nMAKEFLAGS="-j$(nproc)"\n')
+        cont = cont.replace(to_replace, with_)
         f.write(cont)
         name = f.name
     sudo_replace_file(file, name)
