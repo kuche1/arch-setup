@@ -218,6 +218,9 @@ EndSection
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
+    # dark theme
+    pkg_install('gnome-themes-extra')
+
     # additional programs
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
