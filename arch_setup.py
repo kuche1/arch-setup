@@ -84,6 +84,10 @@ def main():
     # terminal text editor, debugging
     pkg_install('micro', 'xclip')
 
+    # shell
+    pkg_install('fish')
+    term_raw('chsh -s $(which fish)')
+
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('''
@@ -109,16 +113,23 @@ EndSection
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
 
-    # shell
-    pkg_install('fish')
-    term_raw('chsh -s $(which fish)')
-
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
     term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
 
     # git workaround
     term(['git', 'config', '--global', 'user.email', 'you@example.com'])
+
+    try:
+        term(['yay', '--version'])
+    except subprocess.CalledProcessError:
+        old_cwd = os.getcwd()
+        os.chdir('/tmp/')
+        shutil.rmtree('./yay')
+        term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
+        os.chdir('./yay')
+        term(['makepkg', '-si'])
+        os.chdir(old_cwd)
 
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
