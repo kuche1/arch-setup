@@ -195,7 +195,9 @@ EndSection
     aur_install('checkupdates-aur')
 
     # sxhkd dependencies
-    pkg_install('wezterm', 'rofi', 'pulsemixer', 'thunar', 'spectacle', 'dunst')
+    pkg_install('caja') # file manager
+        #pkg_install('thunar')
+    pkg_install('wezterm', 'rofi', 'pulsemixer', 'spectacle', 'dunst')
 
     # bspwm dependencies
     pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up

@@ -51,7 +51,7 @@ bspc config active_border_color         "#073642"
 #
 
 # Thunar caching so that it doesn't take 99 years to start
-thunar --daemon &
+#thunar --daemon &
 
 # Taskbar
 ~/.config/polybar/launch.sh &
@@ -67,7 +67,7 @@ thunar --daemon &
 nitrogen --restore &
 
 # Autostart
-#dex -a -s /etc/xdg/autostart/:~/.config/autostart/  
+#dex -a -s /etc/xdg/autostart/:~/.config/autostart/
 
 # Compositor
 #picom -CGb &
