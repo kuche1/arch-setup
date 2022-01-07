@@ -120,6 +120,7 @@ EndSection
     # git workaround
     term(['git', 'config', '--global', 'user.email', 'you@example.com'])
 
+    # install yay if not present
     try:
         term(['yay', '--version'])
     except subprocess.CalledProcessError:
