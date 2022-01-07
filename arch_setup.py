@@ -227,6 +227,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # additional programs
+    pkg_install('kate') # gui text editor
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
     aur_install('librewolf-bin') # browser
