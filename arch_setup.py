@@ -88,7 +88,7 @@ def sudo_replace_string(file, to_replace, with_):
             case 0:
                 warning(f'Variable in file ({file}) seems to have already been set. This happens when you run this script a second time, or if you change the variable manually.')
             case 1:
-                return
+                pass
             case _:
                 warning(f'Variable in file ({file}) found more than one. This is an error.')
                 sys.exit(1)
