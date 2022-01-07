@@ -166,7 +166,8 @@ EndSection
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
 
     # DE essential
-    pkg_install('bspwm', 'sxhkd', 'polybar')
+    pkg_install('bspwm', 'sxhkd')
+    aur_install('polybar')
 
     # polybar fonts
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
