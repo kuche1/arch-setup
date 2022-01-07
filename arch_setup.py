@@ -46,7 +46,7 @@ def sudo_rm(path):
     term(['sudo', 'rm', path])
 
 def get_backup_name(path):
-    return path + '-backup-' + str(datetime.datetime.today())
+    return path + '-backup-' + str(datetime.datetime.today()).reaplce(' ', '-')
 
 def sudo_backup_file(path):
     assert not os.path.isdir(path)
@@ -86,7 +86,8 @@ def sudo_replace_string(file, to_replace, with_):
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         match cont.count(to_replace):
             case 0:
-                warning(f'Variable in file ({file}) seems to have already been set. This happens when you run this script a second time, or if you change the variable manually.')
+                warning(f'Variable in file ({file}) seems to have already been set. This happens when you run this script a second time, or if you change the variable manually. Variable:\n{to_replace}\n')
+                return
             case 1:
                 pass
             case _:
@@ -187,7 +188,10 @@ EndSection
     # polybar fonts
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
     # polybar widgets
-    aur_install('checkupdates-systemd-git')
+    try:
+        term(['checkupdates'])
+    except subprocess.CalledProcessError:
+        aur_install('checkupdates-systemd-git')
     aur_install('checkupdates-aur')
 
     # sxhkd programs
@@ -225,8 +229,14 @@ EndSection
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
 
-    # kernel
+    # boot time
     aur_install('update-grub')
+    sudo_replace_string(PACMAN_CONF_PATH,
+        '\nGRUB_TIMEOUT=5\n',
+        '\nGRUB_TIMEOUT=1\n')
+    term(['sudo', 'update-grub'])
+
+    # kernel
     pkg_install('linux-zen', 'linux-zen-headers')
     term(['sudo', 'update-grub'])
 
