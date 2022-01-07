@@ -199,6 +199,7 @@ EndSection
 
     # bspwm programs
     pkg_install('mate-polkit')
+    pkg_install('dex')
     #sudo pacman -S --needed nitrogen # wallpaper
     #sudo pacman -S --needed picom # compositor
 
@@ -220,6 +221,7 @@ EndSection
 
     # dark theme
     pkg_install('gnome-themes-extra')
+    aur_install('paper-icon-theme')
 
     # additional programs
     pkg_install('gnome-calculator') # calculator
