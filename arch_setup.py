@@ -13,6 +13,7 @@ HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
+PACMAN_CONF_PATH = '/etc/pacman.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
 def warning(info:str):
@@ -79,6 +80,23 @@ def replace_folder(to_replace, with_):
     delete_folder(to_replace)
     shutil.copytree(with_, to_replace)
 
+def sudo_replace_string(file, to_replace, with_):
+    with open(file, 'r') as f:
+        cont = f.read()
+    with tempfile.NamedTemporaryFile('w', delete=False) as f:
+        match cont.count(to_replace):
+            case 0:
+                warning(f'Variable in file ({file}) seems to have already been set. This happens when you run this script a second time, or if you change the variable manually.')
+            case 1:
+                return
+            case _:
+                warning(f'Variable in file ({file}) found more than one. This is an error.')
+                sys.exit(1)
+        cont = cont.replace(to_replace, '\nMAKEFLAGS="-j$(nproc)"\n')
+        f.write(cont)
+        name = f.name
+    sudo_replace_file(MAKEPKG_CONF_PATH, name)
+
 def main():
 
     # terminal text editor, debugging
@@ -102,6 +120,7 @@ EndSection
     sudo_replace_file(MOUSE_ACCEL_PATH, name)
 
     # compilation threads
+    '''
     with open(MAKEPKG_CONF_PATH, 'r') as f:
         cont = f.read()
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
@@ -112,6 +131,15 @@ EndSection
         f.write(cont)
         name = f.name
     sudo_replace_file(MAKEPKG_CONF_PATH, name)
+    '''
+    sudo_replace_string(MAKEPKG_CONF_PATH,
+        '\n#MAKEFLAGS="-j2"\n',
+        '\nMAKEFLAGS="-j$(nproc)"\n')
+
+    # 32bit repo
+    sudo_replace_string(PACMAN_CONF_PATH,
+        '\n#[multilib]\n#Include = /etc/pacman.d/mirrorlist\n',
+        '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
 
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
