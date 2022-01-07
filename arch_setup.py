@@ -231,16 +231,25 @@ EndSection
     pkg_install('kate') # gui text editor
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
-    aur_install('librewolf-bin') # browser
-    term(['xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
     pkg_install('vlc') # video player
     aur_install('pirate-get') # torrent browser
     pkg_install('tigervnc') # vnc
-    pkg_install('steam')
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
 
-    # syncthing
+    pkg_install('steam')
+    sudo_replace_string('/usr/share/applications/steam.desktop',
+        '\nExec=/usr/bin/steam-runtime %U\n',
+        '\nExec=/usr/bin/steam-runtime -silent -nochatui -nofriendsui %U\n')
+
+    pkg_install('discord')
+    sudo_replace_string('/usr/share/applications/discord.desktop',
+        '\nExec=/usr/bin/discord\n',
+        '\nExec=/usr/bin/discord --disable-smooth-scrolling\n')
+
+    aur_install('librewolf-bin') # browser
+    term(['xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
+
     pkg_install('syncthing')
     u = getpass.getuser()
     term(['sudo', 'systemctl', 'start', 'syncthing@'+u+'.service'])
