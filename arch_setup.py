@@ -125,10 +125,10 @@ EndSection
     except subprocess.CalledProcessError:
         old_cwd = os.getcwd()
         os.chdir('/tmp/')
-        if os.path.isdir('./yay')
+        if os.path.isdir('./yay'):
             shutil.rmtree('./yay')
         term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
-        os.chdir('yay')
+        os.chdir('./yay')
         term(['makepkg', '-si'])
         os.chdir(old_cwd)
 
