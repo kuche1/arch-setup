@@ -129,7 +129,7 @@ EndSection
             shutil.rmtree('./yay')
         term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
         os.chdir('./yay')
-        term(['makepkg', '-si'])
+        term(['makepkg', '-si', '--noconfirm'])
         os.chdir(old_cwd)
 
     # video drivers
