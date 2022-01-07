@@ -142,6 +142,12 @@ EndSection
         '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
     term(['sudo', 'pacman', '-Syuu'])
 
+    # color
+    sudo_replace_string(PACMAN_CONF_PATH,
+        '\n#Color\n',
+        '\nColor\n')
+    term(['sudo', 'pacman', '-Syuu'])
+
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
     term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
