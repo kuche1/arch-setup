@@ -95,7 +95,7 @@ def sudo_replace_string(file, to_replace, with_):
         cont = cont.replace(to_replace, '\nMAKEFLAGS="-j$(nproc)"\n')
         f.write(cont)
         name = f.name
-    sudo_replace_file(MAKEPKG_CONF_PATH, name)
+    sudo_replace_file(file, name)
 
 def main():
 
