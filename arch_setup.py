@@ -140,7 +140,7 @@ EndSection
     sudo_replace_string(PACMAN_CONF_PATH,
         '\n#[multilib]\n#Include = /etc/pacman.d/mirrorlist\n',
         '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
-    term('sudo', 'pacman', '-Syuu')
+    term(['sudo', 'pacman', '-Syuu'])
 
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
