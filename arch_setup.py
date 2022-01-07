@@ -104,7 +104,7 @@ def main():
 
     # shell
     pkg_install('fish')
-    term_raw('chsh -s $(which fish)')
+    term_raw('sudo chsh -s $(which fish) $USER')
 
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
