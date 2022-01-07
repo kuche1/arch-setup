@@ -172,7 +172,7 @@ EndSection
     # polybar fonts
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
     # polybar widgets
-    #term(['checkupdates']) # TODO install if missing
+    aur_install('checkupdates-systemd-git')
     aur_install('checkupdates-aur')
 
     # sxhkd programs
