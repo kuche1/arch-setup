@@ -113,6 +113,13 @@ EndSection
     pkg_install('fish')
     term_raw('chsh -s $(which fish)')
 
+    # generate ssh keys
+    pkg_install('openssh') # TODO check for alternative
+    term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
+
+    # git workaround
+    term(['git', 'config', '--global', 'user.email', 'you@example.com'])
+
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
 
@@ -148,10 +155,6 @@ EndSection
         f.write('QT_STYLE_OVERRIDE=gtk\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
-
-    # generate ssh keys
-    pkg_install('openssh') # TODO check for alternative
-    term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
 
     # additional programs
     pkg_install('gnome-calculator') # calculator
