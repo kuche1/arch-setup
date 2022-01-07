@@ -189,7 +189,7 @@ EndSection
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
     # polybar widgets
     try:
-        term(['checkupdates'])
+        term(['checkupdates', '--help'])
     except subprocess.CalledProcessError:
         aur_install('checkupdates-systemd-git')
     aur_install('checkupdates-aur')
