@@ -146,7 +146,16 @@ EndSection
     sudo_replace_string(PACMAN_CONF_PATH,
         '\n#Color\n',
         '\nColor\n')
-    term(['sudo', 'pacman', '-Syuu'])
+
+    # color
+    sudo_replace_string(PACMAN_CONF_PATH,
+        '\n#VerbosePkgLists\n',
+        '\nVerbosePkgLists\n')
+
+    # parallel download
+    sudo_replace_string(PACMAN_CONF_PATH,
+        '\n#ParallelDownloads = 5\n',
+        '\nParallelDownloads = 5\n')
 
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
