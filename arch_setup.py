@@ -198,7 +198,7 @@ EndSection
     pkg_install('wezterm', 'rofi', 'pulsemixer', 'thunar', 'spectacle', 'dunst')
 
     # bspwm dependencies
-    pkg_install('mate-polkit')
+    pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
     pkg_install('dex')
     #sudo pacman -S --needed nitrogen # wallpaper
     #sudo pacman -S --needed picom # compositor
