@@ -13,6 +13,7 @@ import getpass
 HERE = os.path.dirname(__file__) + '/'
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
+GRUB_CONF_PATH - '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
@@ -264,9 +265,12 @@ EndSection
 
     # boot time
     aur_install('update-grub')
-    sudo_replace_string(PACMAN_CONF_PATH,
+    sudo_replace_string(GRUB_CONF_PATH,
         '\nGRUB_TIMEOUT=5\n',
         '\nGRUB_TIMEOUT=1\n')
+    sudo_replace_string(GRUB_CONF_PATH,# TODO fix if not the first item
+        '\nGRUB_CMDLINE_LINUX_DEFAULT="quiet ',
+        '\nGRUB_CMDLINE_LINUX_DEFAULT="noquiet ')
     term(['sudo', 'update-grub'])
 
     # kernel
