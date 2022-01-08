@@ -214,11 +214,14 @@ EndSection
             replace_folder(target, source)
         break
 
-    # unify theme # TODO? append instead of overwrite
+    # unify theme # we could also install adwaita-qt and adwaita-qt6
     aur_install('qt5-styleplugins')
+    aur_install('qt6gtk2')
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
-        f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
-        f.write('QT_STYLE_OVERRIDE=gtk\n')
+        #f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
+        f.write('QT_QPA_PLATFORMTHEME=qt6gtk2\n')
+        #f.write('QT_STYLE_OVERRIDE=gtk\n')
+        f.write('QT_STYLE_OVERRIDE=gtk2\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
@@ -246,6 +249,7 @@ EndSection
     sudo_replace_string('/usr/share/applications/discord.desktop',
         '\nExec=/usr/bin/discord\n',
         '\nExec=/usr/bin/discord --disable-smooth-scrolling\n')
+    aur_install('betterdiscord-installer')
 
     aur_install('librewolf-bin') # browser
     term(['xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
@@ -278,7 +282,7 @@ EndSection
         os.makedirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
     if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
     else: mode = 'a'
-    with open(VMWARE_PREFERENCES_PATH, mode) as f:
+    with open(VMWARE_PREFERENCES_PATH, mode) as f: # TODO check if exists first
         f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
     term(['sync'])
