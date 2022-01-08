@@ -1,0 +1,7 @@
+{
+    "*.zig": {
+        "tabstospaces": true
+    },
+    "colorscheme": "darcula",
+    "softwrap": true
+}
