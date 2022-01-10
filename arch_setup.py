@@ -197,7 +197,7 @@ EndSection
     aur_install('checkupdates-aur')
 
     # sxhkd dependencies
-    pkg_install('caja') # file manager
+    pkg_install('caja', 'caja-open-terminal') # file manager
         #pkg_install('thunar')
     pkg_install('wezterm', 'rofi', 'pulsemixer', 'spectacle', 'dunst')
     plg_install('xsecurelock')
