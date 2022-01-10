@@ -232,6 +232,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # additional programs
+    pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
     pkg_install('kate') # gui text editor
     pkg_install('gnome-calculator') # calculator
