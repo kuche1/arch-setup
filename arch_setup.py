@@ -232,6 +232,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # additional programs
+    pkg_install('gparted') # btrfs partition resize
     pkg_install('yt-dlp') # video downloader
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
