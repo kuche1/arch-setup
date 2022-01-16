@@ -18,5 +18,4 @@ free = r(free)
 used = r(used)
 
 i = ''
-#print(f"{i} {r(used_by_user)} | {r(used)} {i} {r(available)} | {r(free)}")
-print(f"{i} [={total}|+{available}|-{used}]<{free}|{used_by_user}>")
+print(f"{i} +{available}*{free}>|-{used}*{used_by_user}|{total}")

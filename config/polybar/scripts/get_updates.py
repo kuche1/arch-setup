@@ -14,4 +14,4 @@ try:
 except subprocess.CalledProcessError:
     pass
 
-print(f'{upd}|{aur}')
+print(f'{upd}|{aur} ')
