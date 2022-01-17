@@ -238,19 +238,21 @@ EndSection
     pkg_install('gnome-themes-extra')
     aur_install('paper-icon-theme')
 
-    # additional programs
+    # terminal utilities
+    aur_install('pirate-get') # torrent browser
+    pkg_install('yt-dlp') # video downloader
+    pkg_install('htop') # system monitor
+    pkg_install('lynx') # web browser
     aur_install('minq_xvideos-git') # xvideos browser
     aur_install('minq_nhentai-git') # nhentai browser
-    pkg_install('htop')
+
+    # additional programs
     pkg_install('gparted') # btrfs partition resize
-    pkg_install('yt-dlp') # video downloader
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
-    pkg_install('kate') # gui text editor
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
     pkg_install('vlc') # video player
-    aur_install('pirate-get') # torrent browser
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
