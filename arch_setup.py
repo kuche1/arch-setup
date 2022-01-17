@@ -213,7 +213,9 @@ EndSection
         for fol in fols:
             source = dir_+'/'+fol
             target = os.path.expanduser('~/.config/') + fol
-            replace_folder(target, source)
+            #replace_folder(target, source)
+            delete_folder(target)
+            os.symlink(source, target)
         break
 
     # unify theme # we could also install adwaita-qt and adwaita-qt6
