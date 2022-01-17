@@ -8,18 +8,18 @@ import os
 import datetime
 import tempfile
 import shutil
-import getpass
+#import getpass # used for getpass.getuser()
 
 HERE = os.path.dirname(__file__) + '/'
 USERNAME = os.environ.get('USER')
 
+VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
-VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
 def warning(info:str):
     print('====================')
@@ -264,9 +264,9 @@ EndSection
     term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
 
     pkg_install('syncthing')
-    u = getpass.getuser()
-    term(['sudo', 'systemctl', 'start', 'syncthing@'+u+'.service'])
-    term(['sudo', 'systemctl', 'enable', 'syncthing@'+u+'.service'])
+    #term(['sudo', 'systemctl', 'start', 'syncthing@'+USERNAME+'.service'])
+    term(['sudo', 'systemctl', 'enable', 'syncthing@'+USERNAME+'.service'])
+    service_start_and_enable(f'syncthing@{USERNAME}')
 
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
