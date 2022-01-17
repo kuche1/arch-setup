@@ -162,7 +162,8 @@ EndSection
 
     # generate ssh keys
     pkg_install('openssh') # TODO check for alternative
-    term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
+    if os.path.isfile(os.path.expanduser('~/.ssh/id_rsa')) and os.path.isfile(os.path.expanduser('~/.ssh/id_rsa.pub')):
+        term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
 
     # git workaround
     term(['git', 'config', '--global', 'user.email', 'you@example.com'])
