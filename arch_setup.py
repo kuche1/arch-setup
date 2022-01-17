@@ -41,6 +41,10 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
 
+def service_start_and_enable(name):
+    term('sudo', 'systemctl', 'start', name)
+    term('sudo', 'systemctl', 'enable', name)
+
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
 
@@ -293,8 +297,9 @@ EndSection
     # vmware
     aur_install('vmware-workstation')
     term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
-    term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
-    term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
+    #term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
+    #term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
+    service_start_and_enable('vmware-networks')
     if not os.path.isdir(os.path.dirname(VMWARE_PREFERENCES_PATH)):
         os.makedirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
     if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
@@ -302,7 +307,12 @@ EndSection
     with open(VMWARE_PREFERENCES_PATH, mode) as f: # TODO check if exists first
         f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
+    # login manager
+    pkg_install('lightdm', 'lightdm-gtk-greeter')
+    service_start_and_enable('lightdm')
+
     term(['sync'])
+
 
 if __name__ == '__main__':
     main()
