@@ -313,7 +313,7 @@ EndSection
     # unneeded? add to autologin # term(['sudo', 'gpasswd', '-a', USERNAME, 'autologin'])
     sudo_replace_string(LIGHTDM_CONFIG_PATH,
         '\n#autologin-user=\n',
-        '\nautologin-user=' + USERNAME + '\n',)
+        '\nautologin-user='+USERNAME+'\n',)
     #sudo_replace_string(LIGHTDM_CONFIG_PATH,
     #    '\n#autologin-session=\n',
     #    '\nautologin-session=bspwm\n',)
