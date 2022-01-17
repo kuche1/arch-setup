@@ -266,8 +266,7 @@ EndSection
     aur_install('betterdiscord-installer')
 
     aur_install('librewolf-bin') # browser
-    term(['unset', 'BROWSER'])
-    term(['xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
+    term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
 
     pkg_install('syncthing')
     u = getpass.getuser()
