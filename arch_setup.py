@@ -44,9 +44,10 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
 
-def service_start_and_enable(name):
-    term('sudo', 'systemctl', 'start', name)
-    term('sudo', 'systemctl', 'enable', name)
+def service_start_and_enable(name:str):
+    assert type(name) == str
+    term(['sudo', 'systemctl', 'start', name])
+    term(['sudo', 'systemctl', 'enable', name])
 
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
