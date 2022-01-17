@@ -48,7 +48,7 @@ def sudo_rm(path):
     term(['sudo', 'rm', path])
 
 def get_backup_name(path):
-    return path + '-backup-' + str(datetime.datetime.today()).reaplce(' ', '-')
+    return path + '-backup-' + str(datetime.datetime.today()).replace(' ', '-')
 
 def sudo_backup_file(path):
     assert not os.path.isdir(path)
