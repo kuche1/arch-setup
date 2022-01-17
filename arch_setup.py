@@ -247,6 +247,7 @@ EndSection
     aur_install('minq_nhentai-git') # nhentai browser
 
     # additional programs
+    pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
