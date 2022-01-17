@@ -11,11 +11,14 @@ import shutil
 import getpass
 
 HERE = os.path.dirname(__file__) + '/'
+USERNAME = os.environ.get('USER')
+
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
+LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 
 def warning(info:str):
@@ -112,7 +115,7 @@ def main():
 
     # shell
     pkg_install('fish')
-    term_raw('sudo chsh -s $(which fish) $USER')
+    term_raw('sudo chsh -s $(which fish) $USER') # TODO
 
     # mouse accel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
@@ -128,18 +131,6 @@ EndSection
     sudo_replace_file(MOUSE_ACCEL_PATH, name)
 
     # compilation threads
-    '''
-    with open(MAKEPKG_CONF_PATH, 'r') as f:
-        cont = f.read()
-    with tempfile.NamedTemporaryFile('w', delete=False) as f:
-        toreplace = '\n#MAKEFLAGS="-j2"\n'
-        if cont.count(toreplace) != 1:
-            warning('MAKEFLAGS seems to have already been set. This happens when you run this script a second time, or if you change the variable manually.')
-        cont = cont.replace(toreplace, '\nMAKEFLAGS="-j$(nproc)"\n')
-        f.write(cont)
-        name = f.name
-    sudo_replace_file(MAKEPKG_CONF_PATH, name)
-    '''
     sudo_replace_string(MAKEPKG_CONF_PATH,
         '\n#MAKEFLAGS="-j2"\n',
         '\nMAKEFLAGS="-j$(nproc)"\n')
@@ -308,8 +299,18 @@ EndSection
         f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
     # login manager
+    '''
     pkg_install('lightdm', 'lightdm-gtk-greeter')
+    # unneeded? create group # sudo groupadd -r autologin
+    term(['sudo', 'gpasswd', '-a', USERNAME, 'autologin'])
+    sudo_replace_string(LIGHTDM_CONFIG_PATH,
+        '\n#autologin-user=\n',
+        '\nautologin-user=' + USERNAME + '\n',)
+    sudo_replace_string(LIGHTDM_CONFIG_PATH,
+        '\n#autologin-session=\n',
+        '\nautologin-session=bspwm\n',)
     service_start_and_enable('lightdm')
+    '''
 
     term(['sync'])
 
