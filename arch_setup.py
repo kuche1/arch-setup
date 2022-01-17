@@ -9,6 +9,7 @@ import datetime
 import tempfile
 import shutil
 #import getpass # used for getpass.getuser()
+import time
 
 HERE = os.path.dirname(__file__) + '/'
 USERNAME = os.environ.get('USER')
@@ -21,11 +22,15 @@ MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
 
+WARNING_SLEEP = 5
+
 def warning(info:str):
     print('====================')
     print(f'WARNING: {info}')
     print('====================')
-    input('Press enter to continue')
+    #input('Press enter to continue')
+    print(f'Continuing as normal in {WARNING_SLEEP} sec')
+    time.sleep(WARNING_SLEEP)
 
 def term_raw(cmd:str):
     assert type(cmd) == str
@@ -233,6 +238,9 @@ EndSection
     aur_install('paper-icon-theme')
 
     # additional programs
+    aur_install('minq_xvideos-git') # xvideos browser
+    aur_install('minq_nhentai-git') # nhentai browser
+    pkg_install('htop')
     pkg_install('gparted') # btrfs partition resize
     pkg_install('yt-dlp') # video downloader
     pkg_install('ark') # archive manager
@@ -300,18 +308,16 @@ EndSection
         f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
     # login manager
-    '''
     pkg_install('lightdm', 'lightdm-gtk-greeter')
     # unneeded? create group # sudo groupadd -r autologin
-    term(['sudo', 'gpasswd', '-a', USERNAME, 'autologin'])
+    # unneeded? add to autologin # term(['sudo', 'gpasswd', '-a', USERNAME, 'autologin'])
     sudo_replace_string(LIGHTDM_CONFIG_PATH,
         '\n#autologin-user=\n',
         '\nautologin-user=' + USERNAME + '\n',)
-    sudo_replace_string(LIGHTDM_CONFIG_PATH,
-        '\n#autologin-session=\n',
-        '\nautologin-session=bspwm\n',)
+    #sudo_replace_string(LIGHTDM_CONFIG_PATH,
+    #    '\n#autologin-session=\n',
+    #    '\nautologin-session=bspwm\n',)
     service_start_and_enable('lightdm')
-    '''
 
     term(['sync'])
 
