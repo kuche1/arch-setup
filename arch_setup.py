@@ -242,7 +242,7 @@ EndSection
     aur_install('pirate-get') # torrent browser
     pkg_install('yt-dlp') # video downloader
     pkg_install('htop') # system monitor
-    pkg_install('lynx') # web browser
+    pkg_install('w3m') # web browser
     aur_install('minq_xvideos-git') # xvideos browser
     aur_install('minq_nhentai-git') # nhentai browser
 
