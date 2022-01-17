@@ -76,7 +76,7 @@ nitrogen --restore &
 nm-applet --indicator &
 
 # Klaviaturata ezici
-fcitx5 &
+#fcitx5 &
 
 # Mate specific
 #/usr/lib/mate-settings-daemon/mate-settings-daemon &
