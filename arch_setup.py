@@ -231,7 +231,6 @@ EndSection
         f.write('QT_STYLE_OVERRIDE=gtk2\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
-    term(['source', ENVIRONMENT_PATH])
 
     # dark theme
     pkg_install('gnome-themes-extra')
@@ -267,6 +266,7 @@ EndSection
     aur_install('betterdiscord-installer')
 
     aur_install('librewolf-bin') # browser
+    term(['unset', 'BROWSER'])
     term(['xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
 
     pkg_install('syncthing')
