@@ -225,6 +225,7 @@ EndSection
     # unify theme # we could also install adwaita-qt and adwaita-qt6
     aur_install('qt5-styleplugins')
     aur_install('qt6gtk2')
+    pkg_install('lxappearance-gtk3') # theme control panel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         #f.write('QT_QPA_PLATFORMTHEME=gtk2\n')
         f.write('QT_QPA_PLATFORMTHEME=qt6gtk2\n')
