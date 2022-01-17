@@ -182,7 +182,8 @@ EndSection
         os.chdir(old_cwd)
 
     # video drivers
-    pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader')
+    pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # AMD
+    pkg_install('lib32-mesa', 'vulkan-intel', 'lib32-vulkan-intel', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # intel
 
     # DE essential
     pkg_install('bspwm', 'sxhkd')
@@ -229,6 +230,7 @@ EndSection
         f.write('QT_STYLE_OVERRIDE=gtk2\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
+    term(['source', ENVIRONMENT_PATH])
 
     # dark theme
     pkg_install('gnome-themes-extra')
