@@ -200,7 +200,7 @@ EndSection
     pkg_install('caja', 'caja-open-terminal') # file manager
         #pkg_install('thunar')
     pkg_install('wezterm', 'rofi', 'pulsemixer', 'spectacle', 'dunst')
-    plg_install('xsecurelock')
+    pkg_install('xsecurelock')
 
     # bspwm dependencies
     pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
