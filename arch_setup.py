@@ -274,7 +274,7 @@ EndSection
 
     pkg_install('syncthing')
     #term(['sudo', 'systemctl', 'start', 'syncthing@'+USERNAME+'.service'])
-    term(['sudo', 'systemctl', 'enable', 'syncthing@'+USERNAME+'.service'])
+    #term(['sudo', 'systemctl', 'enable', 'syncthing@'+USERNAME+'.service'])
     service_start_and_enable(f'syncthing@{USERNAME}')
 
     # wine deps
