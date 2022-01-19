@@ -10,6 +10,7 @@ import tempfile
 import shutil
 #import getpass # used for getpass.getuser()
 import time
+import psutil
 
 HERE = os.path.dirname(__file__) + '/'
 USERNAME = os.environ.get('USER')
@@ -61,7 +62,6 @@ def service_start_and_enable(name:str):
     service_enable(name)
 
 def is_btrfs(path:str):
-    import psutil
     bestMatch = ''
     fsType = ''
     for part in psutil.disk_partitions():
