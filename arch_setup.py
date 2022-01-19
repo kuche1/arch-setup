@@ -116,7 +116,7 @@ def sudo_replace_string(file, to_replace, with_):
 
 def main():
 
-    # terminal text editor, debugging
+    # debugging
     pkg_install('micro', 'xclip')
 
     # shell
@@ -239,6 +239,8 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    pkg_install('poppler') # pdf combiner
+    pkg_install('pdftk') # pdf cutter
     aur_install('pirate-get') # torrent browser
     pkg_install('yt-dlp') # video downloader
     pkg_install('htop') # system monitor
