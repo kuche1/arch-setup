@@ -49,10 +49,14 @@ def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not bo
     assert type(packages) != str
     term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
 
+def service_enable(name:str):
+    assert type(name) == str
+    term(['sudo', 'systemctl', 'enable', name])
+
 def service_start_and_enable(name:str):
     assert type(name) == str
     term(['sudo', 'systemctl', 'start', name])
-    term(['sudo', 'systemctl', 'enable', name])
+    service_enable(name)
 
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
@@ -162,10 +166,12 @@ EndSection
         '\n#ParallelDownloads = 5\n',
         '\nParallelDownloads = 5\n')
 
-    # generate ssh keys
+    # ssh stuff
     pkg_install('openssh') # TODO check for alternative
     if not (os.path.isfile(os.path.expanduser('~/.ssh/id_rsa')) and os.path.isfile(os.path.expanduser('~/.ssh/id_rsa.pub'))):
         term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
+    with open(os.path.expanduser('~/.ssh/config'), 'a') as f:
+        f.write('\nForwardX11 yes\n')
 
     # git workaround
     #term(['git', 'config', '--global', 'user.email', 'you@example.com'])
@@ -249,19 +255,21 @@ EndSection
     aur_install('minq_nhentai-git') # nhentai browser
 
     # additional programs
+    pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
     pkg_install('gnome-calculator') # calculator
     pkg_install('qbittorrent') # torrent client
-    pkg_install('vlc') # video player
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
 
+    pkg_install('vlc') # video player
+    term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))    
+
     pkg_install('nomacs') # image viewer
-    term('xdg-mime default org.nomacs.ImageLounge.desktop image/*'.split(' ')) # TODO escape * ?
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/gif'.split(' '))
 
     pkg_install('steam')
@@ -273,7 +281,6 @@ EndSection
     sudo_replace_string('/usr/share/applications/discord.desktop',
         '\nExec=/usr/bin/discord\n',
         '\nExec=/usr/bin/discord --disable-smooth-scrolling\n')
-    aur_install('betterdiscord-installer')
 
     aur_install('librewolf-bin') # browser
     term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
@@ -323,7 +330,7 @@ EndSection
     #sudo_replace_string(LIGHTDM_CONFIG_PATH,
     #    '\n#autologin-session=\n',
     #    '\nautologin-session=bspwm\n',)
-    service_start_and_enable('lightdm')
+    service_enable('lightdm')
 
     term(['sync'])
 
