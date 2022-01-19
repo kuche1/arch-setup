@@ -168,7 +168,7 @@ EndSection
         term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
 
     # git workaround
-    term(['git', 'config', '--global', 'user.email', 'you@example.com'])
+    #term(['git', 'config', '--global', 'user.email', 'you@example.com'])
 
     # install yay if not present
     try:
