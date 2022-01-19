@@ -14,15 +14,17 @@ import time
 HERE = os.path.dirname(__file__) + '/'
 USERNAME = os.environ.get('USER')
 
+WARNING_SLEEP = 3
+
+VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
+
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
-
-WARNING_SLEEP = 5
 
 def warning(info:str):
     print('====================')
@@ -57,6 +59,16 @@ def service_start_and_enable(name:str):
     assert type(name) == str
     term(['sudo', 'systemctl', 'start', name])
     service_enable(name)
+
+def is_btrfs(path:str):
+    import psutil
+    bestMatch = ''
+    fsType = ''
+    for part in psutil.disk_partitions():
+        if path.startswith(part.mountpoint) and len(bestMatch) < len(part.mountpoint):
+            fsType = part.fstype
+            bestMatch = part.mountpoint
+    return fsType == 'btrfs'
 
 def sudo_cp(from_, to):
     term(['sudo', 'cp', from_, to])
@@ -286,8 +298,6 @@ EndSection
     term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
 
     pkg_install('syncthing')
-    #term(['sudo', 'systemctl', 'start', 'syncthing@'+USERNAME+'.service'])
-    #term(['sudo', 'systemctl', 'enable', 'syncthing@'+USERNAME+'.service'])
     service_start_and_enable(f'syncthing@{USERNAME}')
 
     # wine deps
@@ -308,10 +318,13 @@ EndSection
     term(['sudo', 'update-grub'])
 
     # vmware
+    if not os.path.isdir(VMWARE_VMS_PATH):
+        os.makedirs(VMWARE_VMS_PATH)
+        if is_btrfs(VMWARE_VMS_PATH):
+            term(['chattr', '-R', '+C', VMWARE_VMS_PATH])
+            #term(['chattr', '+C', VMWARE_VMS_PATH])
     aur_install('vmware-workstation')
     term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
-    #term(['sudo', 'systemctl', 'start', 'vmware-networks.service'])
-    #term(['sudo', 'systemctl', 'enable', 'vmware-networks.service'])
     service_start_and_enable('vmware-networks')
     if not os.path.isdir(os.path.dirname(VMWARE_PREFERENCES_PATH)):
         os.makedirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
