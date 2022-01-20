@@ -232,6 +232,7 @@ EndSection
     # bspwm dependencies
     pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
     pkg_install('dex')
+    pkg_install('network-manager-applet')
     #sudo pacman -S --needed nitrogen # wallpaper
     #sudo pacman -S --needed picom # compositor
 
