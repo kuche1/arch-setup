@@ -269,7 +269,7 @@ EndSection
     pkg_install('htop') # system monitor
     pkg_install('w3m') # web browser
     aur_install('minq_xvideos-git') # xvideos browser
-    aur_install('minq_nhentai-git', 'python-minq_storage-git') # nhentai browser
+    aur_install('minq-nhentai-git', 'python-minq-storage-git') # nhentai browser
 
     # additional programs
     pkg_install('gnome-disk-utility')
