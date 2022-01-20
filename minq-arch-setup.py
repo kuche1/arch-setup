@@ -13,13 +13,13 @@ import time
 import psutil
 
 HERE = os.path.dirname(__file__) + '/'
+FILE_NAME = os.path.basename(__file__)
 USERNAME = os.environ.get('USER')
 
 WARNING_SLEEP = 3
-
+TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
-
 ENVIRONMENT_PATH = '/etc/environment'
 MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
@@ -131,6 +131,11 @@ def sudo_replace_string(file, to_replace, with_):
     sudo_replace_file(file, name)
 
 def main():
+
+    if HERE != TARGET_HERE:
+        term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
+        term(['./'+TARGET_HERE+FILE_NAME])
+        return
 
     # debugging
     pkg_install('micro', 'xclip')
