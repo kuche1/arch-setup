@@ -48,15 +48,14 @@ def term(cmds:list):
     cmd = shlex.join(cmds)
     term_raw(cmd)
 
-def term_yes(cmds:list):
+def term_yes(cmds:list): # TODO not used anywhere
     assert type(cmds) in (list, tuple)
     cmd = 'yes | ' + shlex.join(cmds)
     term_raw(cmd)
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
-    term_yes(['sudo', 'pacman', '-S', '--needed'] + list(packages))
-    # '--noconfirm'
+    term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
