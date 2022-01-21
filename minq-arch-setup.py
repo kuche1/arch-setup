@@ -30,6 +30,7 @@ GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
+TLP_CONF_PATH = '/etc/tlp.conf'
 
 def warning(info:str):
     print('====================')
@@ -326,9 +327,9 @@ EndSection
     # power manager
     if LAPTOP:
         pkg_install('tlp')
-        sudo_replace_string('/etc/tlp.conf',
-            '\n#STOP_CHARGE_TRESH_RATIO=80\n',
-            '\nSTOP_CHARGE_TRESH_RATIO=1\n',)
+        sudo_replace_string(TLP_CONF_PATH,
+            '\n#STOP_CHARGE_TRESH_BAT0=80\n',
+            '\nSTOP_CHARGE_TRESH_BAT0=1\n',)
         service_start_and_enable('tlp')
 
     # wine deps
