@@ -15,6 +15,7 @@ import psutil
 HERE = os.path.dirname(__file__) + '/'
 FILE_NAME = os.path.basename(__file__)
 USERNAME = os.environ.get('USER')
+LAPTOP = psutil.sensors_battery() != None
 
 WARNING_SLEEP = 3
 TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
@@ -271,6 +272,7 @@ EndSection
     pkg_install('w3m') # web browser
     aur_install('minq_xvideos-git') # xvideos browser
     aur_install('minq-nhentai-git', 'python-minq-storage-git') # nhentai browser
+    aur_install('minq-youtube-git') # youtube browser
 
     # additional programs
     pkg_install('gnome-disk-utility')
@@ -306,7 +308,16 @@ EndSection
     term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
 
     pkg_install('syncthing')
-    service_start_and_enable(f'syncthing@{USERNAME}')
+    if not LAPTOP:
+        service_start_and_enable(f'syncthing@{USERNAME}')
+
+    # power manager
+    if LAPTOP:
+        pkg_install('tlp')
+        sudo_replace_string('/etc/tlp.conf',
+            '\n#STOP_CHARGE_TRESH_RATIO=80\n',
+            '\nSTOP_CHARGE_TRESH_RATIO=1\n',)
+        service_start_and_enable('tlp')
 
     # wine deps
     pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
@@ -326,20 +337,21 @@ EndSection
     term(['sudo', 'update-grub'])
 
     # vmware
-    if not os.path.isdir(VMWARE_VMS_PATH):
-        os.makedirs(VMWARE_VMS_PATH)
-        if is_btrfs(VMWARE_VMS_PATH):
-            term(['chattr', '-R', '+C', VMWARE_VMS_PATH])
-            #term(['chattr', '+C', VMWARE_VMS_PATH])
-    aur_install('vmware-workstation')
-    term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
-    service_start_and_enable('vmware-networks')
-    if not os.path.isdir(os.path.dirname(VMWARE_PREFERENCES_PATH)):
-        os.makedirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
-    if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
-    else: mode = 'a'
-    with open(VMWARE_PREFERENCES_PATH, mode) as f: # TODO check if exists first
-        f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
+    if not LAPTOP:
+        if not os.path.isdir(VMWARE_VMS_PATH):
+            os.makedirs(VMWARE_VMS_PATH)
+            if is_btrfs(VMWARE_VMS_PATH):
+                term(['chattr', '-R', '+C', VMWARE_VMS_PATH])
+                #term(['chattr', '+C', VMWARE_VMS_PATH])
+        aur_install('vmware-workstation')
+        term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
+        service_start_and_enable('vmware-networks')
+        if not os.path.isdir(os.path.dirname(VMWARE_PREFERENCES_PATH)):
+            os.makedirs(os.path.dirname(VMWARE_PREFERENCES_PATH))
+        if os.path.isfile(VMWARE_PREFERENCES_PATH): mode = 'w'
+        else: mode = 'a'
+        with open(VMWARE_PREFERENCES_PATH, mode) as f: # TODO check if exists first
+            f.write('\nmks.gl.allowBlacklistedDrivers = "TRUE"\n')
 
     # login manager
     pkg_install('lightdm', 'lightdm-gtk-greeter')
