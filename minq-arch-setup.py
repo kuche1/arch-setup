@@ -13,7 +13,7 @@ import time
 import psutil
 
 HERE = os.path.dirname(__file__) + '/'
-FILE_NAME = os.path.basename(__file__)
+REAL_FILE_NAME = os.readlink(os.path.basename(__file__))
 USERNAME = os.environ.get('USER')
 LAPTOP = psutil.sensors_battery() != None
 
@@ -135,7 +135,7 @@ def main():
 
     if HERE != TARGET_HERE:
         term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-        term([TARGET_HERE+FILE_NAME])
+        term([TARGET_HERE+REAL_FILE_NAME])
         return
 
     # debugging
