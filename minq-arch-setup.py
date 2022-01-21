@@ -51,7 +51,7 @@ def term(cmds:list):
 def term_yes(cmds:list):
     assert type(cmds) in (list, tuple)
     cmd = 'yes | ' + shlex.join(cmds)
-    term_raw(cmds)
+    term_raw(cmd)
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
