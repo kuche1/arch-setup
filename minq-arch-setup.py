@@ -13,7 +13,7 @@ import time
 import psutil
 
 HERE = os.path.dirname(__file__) + '/'
-REAL_FILE_NAME = os.readlink(os.path.basename(__file__))
+REAL_FILE_NAME = os.path.basename(os.readlink(__file__))
 USERNAME = os.environ.get('USER')
 LAPTOP = psutil.sensors_battery() != None
 
