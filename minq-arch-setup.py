@@ -21,7 +21,7 @@ try: REAL_FILE_NAME = os.readlink(__file__)
 except OSError: REAL_FILE_NAME = __file__
 REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
 
-WARNING_SLEEP = 3
+WARNING_SLEEP = 2.5
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
@@ -110,8 +110,9 @@ def delete_folder(path):
     assert not os.path.isfile(path)
     if os.path.isdir(path):
         backup_folder(path)
-        shutil.rmtree(path)
-        #os.remove(path)
+        try: shutil.rmtree(path)
+        except OSError: os.remove()
+        #os.remove(path) #os.unlink()
 
 def sudo_replace_file(to_replace, with_):
     sudo_backup_file(to_replace)
