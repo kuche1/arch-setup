@@ -111,8 +111,8 @@ def delete_folder(path):
     assert not os.path.isfile(path)
     if os.path.isdir(path):
         backup_folder(path)
-        #shutil.rmtree(path)
-        os.remove(path)
+        shutil.rmtree(path)
+        #os.remove(path)
 
 def sudo_replace_file(to_replace, with_):
     sudo_backup_file(to_replace)
