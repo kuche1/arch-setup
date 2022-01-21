@@ -50,7 +50,7 @@ def term(cmds:list):
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
-    term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
+    term(['yes', '|', 'sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
@@ -139,7 +139,7 @@ def main():
     if HERE != TARGET_HERE:
         if not os.path.isdir(TARGET_HERE):
             term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-        term([TARGET_HERE+REAL_FILE_NAME]) # TODO
+        term([TARGET_HERE+REAL_FILE_NAME])
         return
 
     # debugging
