@@ -136,7 +136,7 @@ def main():
     if HERE != TARGET_HERE:
         if not os.path.isdir(TARGET_HERE):
             term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-        term('python3', [TARGET_HERE+REAL_FILE_NAME])
+        term(['python3', TARGET_HERE+REAL_FILE_NAME])
         return
 
     # debugging
