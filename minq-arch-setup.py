@@ -136,8 +136,6 @@ def sudo_replace_string(file, to_replace, with_):
 
 def main():
 
-    return
-
     if HERE != TARGET_HERE:
         if not os.path.isdir(TARGET_HERE):
             term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
