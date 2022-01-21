@@ -21,7 +21,7 @@ try: REAL_FILE_NAME = os.readlink(__file__)
 except OSError: REAL_FILE_NAME = __file__
 REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
 
-WARNING_SLEEP = 1.8
+WARNING_SLEEP = 1.4
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
