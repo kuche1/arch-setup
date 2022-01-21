@@ -21,7 +21,7 @@ try: REAL_FILE_NAME = os.readlink(__file__)
 except OSError: REAL_FILE_NAME = __file__
 REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
 
-WARNING_SLEEP = 2.5
+WARNING_SLEEP = 1.8
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
@@ -48,14 +48,14 @@ def term(cmds:list):
     cmd = shlex.join(cmds)
     term_raw(cmd)
 
-def term_yes(cmds:list): # TODO not used anywhere
+def term_yes(cmds:list):
     assert type(cmds) in (list, tuple)
     cmd = 'yes | ' + shlex.join(cmds)
     term_raw(cmd)
 
 def pkg_install(*packages:list[str]):
     assert type(packages) != str
-    term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
+    term_yes(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
@@ -111,7 +111,7 @@ def delete_folder(path):
     if os.path.isdir(path):
         backup_folder(path)
         try: shutil.rmtree(path)
-        except OSError: os.remove()
+        except OSError: os.remove(path)
         #os.remove(path) #os.unlink()
 
 def sudo_replace_file(to_replace, with_):
