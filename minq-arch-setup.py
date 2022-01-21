@@ -13,12 +13,15 @@ import time
 import psutil
 
 HERE = os.path.dirname(__file__) + '/'
-REAL_FILE_NAME = os.path.basename(os.readlink(__file__))
+TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
 USERNAME = os.environ.get('USER')
 LAPTOP = psutil.sensors_battery() != None
 
+try: REAL_FILE_NAME = os.readlink(__file__)
+except OSError: REAL_FILE_NAME = __file__
+REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
+
 WARNING_SLEEP = 3
-TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
@@ -133,10 +136,12 @@ def sudo_replace_string(file, to_replace, with_):
 
 def main():
 
+    return
+
     if HERE != TARGET_HERE:
         if not os.path.isdir(TARGET_HERE):
             term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-        term(['python3', TARGET_HERE+REAL_FILE_NAME])
+        term([TARGET_HERE+REAL_FILE_NAME]) # TODO
         return
 
     # debugging
