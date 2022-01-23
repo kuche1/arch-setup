@@ -303,6 +303,9 @@ EndSection
     term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
     term('xdg-mime default vlc.desktop video/mp4'.split(' '))
     term('xdg-mime default vlc.desktop video/quicktime'.split(' '))
+    # audio
+    term('xdg-mime default vlc.desktop audio/mpeg'.split(' '))
+    term('xdg-mime default vlc.desktop audio/x-wav'.split(' '))
 
     pkg_install('nomacs') # image viewer
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/gif'.split(' '))
