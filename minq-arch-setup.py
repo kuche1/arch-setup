@@ -303,6 +303,7 @@ EndSection
     term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
     term('xdg-mime default vlc.desktop video/mp4'.split(' '))
     term('xdg-mime default vlc.desktop video/quicktime'.split(' '))
+    term('xdg-mime default vlc.desktop video/mpeg'.split(' '))
     # audio
     term('xdg-mime default vlc.desktop audio/mpeg'.split(' '))
     term('xdg-mime default vlc.desktop audio/x-wav'.split(' '))
