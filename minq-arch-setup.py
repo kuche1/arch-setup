@@ -309,6 +309,7 @@ EndSection
 
     pkg_install('nomacs') # image viewer
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/gif'.split(' '))
+    term('xdg-mime default org.nomacs.ImageLounge.desktop image/png'.split(' '))
 
     pkg_install('steam')
     sudo_replace_string('/usr/share/applications/steam.desktop',
