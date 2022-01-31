@@ -312,6 +312,7 @@ EndSection
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/gif'.split(' '))
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/png'.split(' '))
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/jpeg'.split(' '))
+    term('xdg-mime default org.nomacs.ImageLounge.desktop image/webp'.split(' '))
 
     pkg_install('steam')
     sudo_replace_string('/usr/share/applications/steam.desktop',
