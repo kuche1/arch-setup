@@ -288,6 +288,7 @@ EndSection
     aur_install('minq-youtube-git') # youtube browser
 
     # additional programs
+    pkg_install('mcomix') # .cbr file reader (Junji Ito)
     pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
