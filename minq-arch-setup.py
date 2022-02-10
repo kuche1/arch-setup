@@ -301,6 +301,7 @@ EndSection
     pkg_install('ksysguard') # task manager
 
     pkg_install('vlc') # video player
+    term('xdg-mime default vlc.desktop video/x-msvideo'.split(' '))
     term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
     term('xdg-mime default vlc.desktop video/mp4'.split(' '))
     term('xdg-mime default vlc.desktop video/quicktime'.split(' '))
