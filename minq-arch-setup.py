@@ -288,6 +288,7 @@ EndSection
     aur_install('minq-youtube-git') # youtube browser
 
     # additional programs
+    aur_install('nuclear-player-bin') # music discoverer, downloader and player
     pkg_install('mcomix') # .cbr file reader (Junji Ito)
     pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
@@ -301,6 +302,8 @@ EndSection
     pkg_install('ksysguard') # task manager
 
     pkg_install('vlc') # video player
+    # video
+    term('xdg-mime default vlc.desktop video/x-flv'.split(' '))
     term('xdg-mime default vlc.desktop video/x-msvideo'.split(' '))
     term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
     term('xdg-mime default vlc.desktop video/mp4'.split(' '))
@@ -362,9 +365,9 @@ EndSection
     if not LAPTOP:
         if not os.path.isdir(VMWARE_VMS_PATH):
             os.makedirs(VMWARE_VMS_PATH)
-            if is_btrfs(VMWARE_VMS_PATH):
-                term(['chattr', '-R', '+C', VMWARE_VMS_PATH])
-                #term(['chattr', '+C', VMWARE_VMS_PATH])
+        if is_btrfs(VMWARE_VMS_PATH):
+            term(['chattr', '-R', '+C', VMWARE_VMS_PATH])
+            #term(['chattr', '+C', VMWARE_VMS_PATH])
         aur_install('vmware-workstation')
         term(['sudo', 'modprobe', '-a', 'vmw_vmci', 'vmmon'])
         service_start_and_enable('vmware-networks')
@@ -381,7 +384,7 @@ EndSection
     # unneeded? add to autologin # term(['sudo', 'gpasswd', '-a', USERNAME, 'autologin'])
     sudo_replace_string(LIGHTDM_CONFIG_PATH,
         '\n#autologin-user=\n',
-        '\nautologin-user='+USERNAME+'\n',)
+       f'\nautologin-user={USERNAME}\n',)
     #sudo_replace_string(LIGHTDM_CONFIG_PATH,
     #    '\n#autologin-session=\n',
     #    '\nautologin-session=bspwm\n',)
