@@ -54,10 +54,14 @@ def term_yes(cmds:list): # TODO unused
     cmd = 'yes | ' + shlex.join(cmds)
     term_raw(cmd)
 
-def pkg_install(*packages:list[str]):
+def pkg_force_install(*packages:list[str]):
     assert type(packages) in [list, tuple]
     term_yes(['sudo', 'pacman', '-S', '--needed'] + list(packages))
     # '--noconfirm'
+
+def pkg_install(*packages:list[str]):
+    assert type(packages) in [list, tuple]
+    term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
@@ -338,7 +342,7 @@ EndSection
 
     # power manager
     if LAPTOP:
-        pkg_install('tlp')
+        pkg_force_install('tlp')
         sudo_replace_string(TLP_CONF_PATH,
             '\n#STOP_CHARGE_TRESH_BAT0=80\n',
             '\nSTOP_CHARGE_TRESH_BAT0=1\n',)
