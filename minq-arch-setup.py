@@ -290,6 +290,7 @@ EndSection
     aur_install('minq_xvideos-git') # xvideos browser
     aur_install('minq-nhentai-git', 'python-minq-storage-git') # nhentai browser
     aur_install('minq-youtube-git') # youtube browser
+    pkg_install('trash-cli') # trash manager
 
     # additional programs
     aur_install('freezer-appimage') # music
