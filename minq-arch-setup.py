@@ -292,7 +292,8 @@ EndSection
     aur_install('minq-youtube-git') # youtube browser
 
     # additional programs
-    aur_install('nuclear-player-bin') # music discoverer, downloader and player
+    aur_install('freezer-appimage') # music
+    aur_install('nuclear-player-bin') # music
     pkg_install('mcomix') # .cbr file reader (Junji Ito)
     pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
