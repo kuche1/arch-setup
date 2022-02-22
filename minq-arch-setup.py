@@ -235,11 +235,8 @@ EndSection
     # polybar fonts
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
     # polybar widgets
-    try:
-        term(['checkupdates', '--help'])
-    except subprocess.CalledProcessError:
-        aur_install('checkupdates-systemd-git')
-    aur_install('checkupdates-aur')
+    pkg_install('pacman-contrib')
+    aur_install('minq-checkupdates-aur')
 
     # sxhkd dependencies
     pkg_install('caja', 'caja-open-terminal') # file manager

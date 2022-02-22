@@ -10,7 +10,7 @@ except subprocess.CalledProcessError:
     pass
 
 try:
-    aur = subprocess.check_output('checkupdates-aur').count(b'\n')
+    aur = subprocess.check_output('minq-checkupdates-aur').count(b'\n')
 except subprocess.CalledProcessError:
     pass
 
