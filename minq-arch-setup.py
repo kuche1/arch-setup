@@ -290,6 +290,7 @@ EndSection
     pkg_install('trash-cli') # trash manager
 
     # additional programs
+    aur_install('mangohud-common', 'mangohud', 'lib32-mangohud') # gayming overlay
     aur_install('freezer-appimage') # music
     aur_install('nuclear-player-bin') # music
     pkg_install('mcomix') # .cbr file reader (Junji Ito)
