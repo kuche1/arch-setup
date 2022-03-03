@@ -278,6 +278,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    aur_install('minq-update-git-packages-git') # updates -git packages
     pkg_install('poppler') # pdf combiner
     pkg_install('pdftk') # pdf cutter
     aur_install('pirate-get') # torrent browser
