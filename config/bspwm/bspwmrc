@@ -86,3 +86,17 @@ nm-applet --indicator &
 
 # Cursor
 xsetroot -cursor_name left_ptr &
+
+# Audio sharing
+sleep 10
+# suzdavame cheshma i mikrifin
+pactl load-module module-null-sink media.class=Audio/Sink sink_name=my-combined-sink channel_map=stereo
+pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=my-virtualmic channel_map=front-left,front-right
+# redirektvame istinskiq mikrofon kum virtualniq
+pw-link alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback:capture_MONO my-virtualmic:input_FL
+# svurzvam cheshmata da redirektva sum virtualniq mikrofon
+pw-link my-combined-sink:monitor_FL my-virtualmic:input_FL
+pw-link my-combined-sink:monitor_FR my-virtualmic:input_FR
+# svurzvam cheshmata da redirektvam kum istinskite slushalki
+pw-link my-combined-sink:monitor_FL alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FL
+pw-link my-combined-sink:monitor_FR alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FR
