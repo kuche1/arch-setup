@@ -208,8 +208,15 @@ EndSection
     with open(os.path.expanduser('~/.ssh/config'), 'a') as f:
         f.write('\nForwardX11 yes\n')
 
-    # git workaround
+    # git config
     #term(['git', 'config', '--global', 'user.email', 'you@example.com'])
+    pkg_install('git-delta')
+    # https://dandavison.github.io/delta/get-started.html
+    term(['git', 'config' '--global', 'core.pager', 'delta'])
+    term(['git', 'config' '--global', 'interactive.diffFilter', 'delta --color-only'])
+    term(['git', 'config' '--global', 'delta.navigate', 'true'])
+    term(['git', 'config' '--global', 'merge.conflictstyle', 'diff3'])
+    term(['git', 'config' '--global', 'diff.colorMoved', 'default'])
 
     # install yay if not present
     try:
