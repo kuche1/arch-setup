@@ -285,6 +285,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    pkg_install('bat')# cat alternative
     pkg_install('bottom') # system monitor
     pkg_install('tldr') # man alternative
     pkg_install('duf') # better du
