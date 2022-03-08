@@ -285,6 +285,10 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    pkg_install('bottom') # system monitor
+    pkg_install('tldr') # man alternative
+    pkg_install('duf') # better du
+    pkg_install('lsd') # better ls
     aur_install('minq-update-git-packages-git') # updates -git packages
     pkg_install('poppler') # pdf combiner
     pkg_install('pdftk') # pdf cutter
