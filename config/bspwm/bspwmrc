@@ -88,7 +88,7 @@ nm-applet --indicator &
 xsetroot -cursor_name left_ptr &
 
 # Audio sharing
-sleep 10
+sleep 15
 # create sinks and virtual mic
 pactl load-module module-null-sink media.class=Audio/Sink sink_name=audio-sharing-sink channel_map=stereo
 pactl load-module module-null-sink media.class=Audio/Sink sink_name=CONFIG-ONLY-audio-sharing-sync-volume channel_map=stereo
