@@ -293,7 +293,7 @@ EndSection
     aur_install('minq-update-git-packages-git') # updates -git packages
     pkg_install('poppler') # pdf combiner
     pkg_install('pdftk') # pdf cutter
-    aur_install('pirate-get') # torrent browser
+    aur_install('pirate-get-git') # torrent browser
     pkg_install('yt-dlp') # video downloader
     pkg_install('htop') # system monitor
     pkg_install('w3m') # web browser
