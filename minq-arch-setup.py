@@ -271,11 +271,9 @@ EndSection
     # unify theme # we could also install adwaita-qt and adwaita-qt6
     aur_install('adwaita-qt', 'adwaita-qt6')
     pkg_install('lxappearance-gtk3') # GTK theme control panel
+    pkg_install('qt5ct', 'qt6ct') # qt theme control panel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
-        f.write('# gtk\n')
-        f.write('GTK_THEME=Adwaita:dark\n')
-        f.write('# qt\n')
-        f.write('QT_STYLE_OVERRIDE=Adwaita-Dark\n')
+        f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
