@@ -13,7 +13,7 @@ fi
 #bspc monitor -d '~' 1 2 3 4 5 6 7 8 9 0 '-' '=' '<-' I H '^' D E 'v' 0 1 2 3 4 5 6 7 8 9 '/' '*' - + R d
 #bspc monitor -d '~' 1 2 3 4 5 6 7 8 9 0 '-' '=' '<-' I H '^' D E 'v' 0 1 2 3 4 5 6 7 8 9 '/' '*' - + d
 #bspc monitor -d '~' 1 2 3 4 5 6 7 8 9 0 '-' '=' '<-' IN HO 'P^' DE EN 'Pv' 0 1 2 3 4 5 6 7 8 9 '/' '*' - + d
-bspc monitor -d '~~' 01 02 03 04 05 06 07 08 09 00 '--' '==' '<-' IN HO 'P^' DE EN 'Pv' 00 01 02 03 04 05 06 07 08 09 '//' '**' -- ++ dl
+bspc monitor -d '~~' 01 02 03 04 05 06 07 08 09 00 '--' '==' '<-' IS HO 'P^' DL ED 'Pv' 00 01 02 03 04 05 06 07 08 09 '//' '**' -- ++ dl
 
 bspc config border_width         2
 bspc config window_gap          12
@@ -90,22 +90,22 @@ nm-applet --indicator &
 xsetroot -cursor_name left_ptr &
 
 # Audio sharing
-sleep 15
+#sleep 15
 # create sinks and virtual mic
-pactl load-module module-null-sink media.class=Audio/Sink sink_name=audio-sharing-sink channel_map=stereo
-pactl load-module module-null-sink media.class=Audio/Sink sink_name=CONFIG-ONLY-audio-sharing-sync-volume channel_map=stereo
-pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=nice-virtualmic channel_map=front-left,front-right
+#pactl load-module module-null-sink media.class=Audio/Sink sink_name=audio-sharing-sink channel_map=stereo
+#pactl load-module module-null-sink media.class=Audio/Sink sink_name=CONFIG-ONLY-audio-sharing-sync-volume channel_map=stereo
+#pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=nice-virtualmic channel_map=front-left,front-right
 # redirect real mic to virtual mic
-pw-link alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback:capture_MONO nice-virtualmic:input_FL
+#pw-link alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback:capture_MONO nice-virtualmic:input_FL
 	# find this by running `pw-link -o`
 # redirect regular sink to lower volume sink
-pw-link audio-sharing-sink:monitor_FL CONFIG-ONLY-audio-sharing-sync-volume:playback_FL
-pw-link audio-sharing-sink:monitor_FR CONFIG-ONLY-audio-sharing-sync-volume:playback_FR
+#pw-link audio-sharing-sink:monitor_FL CONFIG-ONLY-audio-sharing-sync-volume:playback_FL
+#pw-link audio-sharing-sink:monitor_FR CONFIG-ONLY-audio-sharing-sync-volume:playback_FR
 # redirect lower volume sink to virtual mic
-pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FL nice-virtualmic:input_FL
-pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FR nice-virtualmic:input_FR
+#pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FL nice-virtualmic:input_FL
+#pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FR nice-virtualmic:input_FR
 # set volume on lower volume sink
-pactl set-sink-volume CONFIG-ONLY-audio-sharing-sync-volume 50%
+#pactl set-sink-volume CONFIG-ONLY-audio-sharing-sync-volume 50%
 # connect regular sink to headphones
-pw-link audio-sharing-sink:monitor_FL alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FL
-pw-link audio-sharing-sink:monitor_FR alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FR
+#pw-link audio-sharing-sink:monitor_FL alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FL
+#pw-link audio-sharing-sink:monitor_FR alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FR
