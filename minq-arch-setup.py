@@ -8,9 +8,9 @@ import os
 import datetime
 import tempfile
 import shutil
-#import getpass # used for getpass.getuser()
 import time
 import psutil
+import sys
 
 HERE = os.path.dirname(__file__) + '/'
 TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
@@ -21,7 +21,7 @@ try: REAL_FILE_NAME = os.readlink(__file__)
 except OSError: REAL_FILE_NAME = __file__
 REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
 
-WARNING_SLEEP = 1.4
+WARNING_SLEEP = 0.5
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
@@ -36,8 +36,8 @@ def warning(info:str):
     print('====================')
     print(f'WARNING: {info}')
     print('====================')
-    #input('Press enter to continue')
     print(f'Continuing as normal in {WARNING_SLEEP} sec')
+    print('====================')
     time.sleep(WARNING_SLEEP)
 
 def term_raw(cmd:str):
@@ -61,10 +61,12 @@ def pkg_force_install(*packages:list[str]):
 
 def pkg_install(*packages:list[str]):
     assert type(packages) in [list, tuple]
+    print(f'Installing package(s): {packages}')
     term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
+    print(f'Installing AUR package(s): {packages}')
     term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
 
 def service_enable(name:str):
@@ -149,9 +151,8 @@ def sudo_replace_string(file, to_replace, with_):
 def main():
 
     if HERE != TARGET_HERE:
-        if os.path.isdir(TARGET_HERE):
-            delete_folder(TARGET_HERE)
-        term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
+        if not os.path.isdir(TARGET_HERE):
+            term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
         term([TARGET_HERE+REAL_FILE_NAME])
         return
 
@@ -212,11 +213,11 @@ EndSection
     #term(['git', 'config', '--global', 'user.email', 'you@example.com'])
     pkg_install('git-delta')
     # https://dandavison.github.io/delta/get-started.html
-    term(['git', 'config' '--global', 'core.pager', 'delta'])
-    term(['git', 'config' '--global', 'interactive.diffFilter', 'delta --color-only'])
-    term(['git', 'config' '--global', 'delta.navigate', 'true'])
-    term(['git', 'config' '--global', 'merge.conflictstyle', 'diff3'])
-    term(['git', 'config' '--global', 'diff.colorMoved', 'default'])
+    term(['git', 'config', '--global', 'core.pager', 'delta'])
+    term(['git', 'config', '--global', 'interactive.diffFilter', 'delta --color-only'])
+    term(['git', 'config', '--global', 'delta.navigate', 'true'])
+    term(['git', 'config', '--global', 'merge.conflictstyle', 'diff3'])
+    term(['git', 'config', '--global', 'diff.colorMoved', 'default'])
 
     # install yay if not present
     try:
@@ -288,23 +289,21 @@ EndSection
     pkg_install('tldr') # man alternative
     pkg_install('duf') # better du
     pkg_install('lsd') # better ls
-    aur_install('minq-update-git-packages-git') # updates -git packages
     pkg_install('poppler') # pdf combiner
     pkg_install('pdftk') # pdf cutter
     aur_install('pirate-get-git') # torrent browser
     pkg_install('yt-dlp') # video downloader
     pkg_install('htop') # system monitor
     pkg_install('w3m') # web browser
-    aur_install('minq_xvideos-git') # xvideos browser
-    aur_install('minq-nhentai-git', 'python-minq-storage-git') # nhentai browser
-    aur_install('minq-youtube-git') # youtube browser
+    aur_install('minq-xvideos-git') # xvideos browser
+    aur_install('minq-nhentai-git', 'python-minq-caching-thing-git') # nhentai browser
     pkg_install('trash-cli') # trash manager
 
     # additional programs
     aur_install('mangohud-common', 'mangohud', 'lib32-mangohud') # gayming overlay
-    aur_install('freezer-appimage') # music
+    #aur_install('freezer-appimage') # music # commented due to slow download
     aur_install('nuclear-player-bin') # music
-    pkg_install('mcomix') # .cbr file reader (Junji Ito)
+    aur_install('mcomix-git') # .cbr file reader (Junji Ito)
     pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
@@ -405,8 +404,8 @@ EndSection
     #    '\nautologin-session=bspwm\n',)
     service_enable('lightdm')
 
+    print('Syncing file system...')
     term(['sync'])
-
 
 if __name__ == '__main__':
     main()
