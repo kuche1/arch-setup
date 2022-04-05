@@ -29,6 +29,7 @@ MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
+PARU_CONF_PATH = '/etc/paru.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
 TLP_CONF_PATH = '/etc/tlp.conf'
 
@@ -201,6 +202,12 @@ EndSection
     sudo_replace_string(PACMAN_CONF_PATH,
         '\n#ParallelDownloads = 5\n',
         '\nParallelDownloads = 5\n')
+
+    # paru
+    pkg_install('paru')
+    sudo_replace_string(PARU_CONF_PATH,
+        '\n#BottomUp\n',
+        '\nBottomUp\n')
 
     # ssh stuff
     pkg_install('openssh') # TODO check for alternative
