@@ -345,10 +345,16 @@ EndSection
         '\nExec=/usr/bin/steam-runtime %U\n',
         '\nExec=/usr/bin/steam-runtime -silent -nochatui -nofriendsui %U\n')
 
+    # fuck this cancer shit
     pkg_install('discord')
     sudo_replace_string('/usr/share/applications/discord.desktop',
         '\nExec=/usr/bin/discord\n',
         '\nExec=/usr/bin/discord --disable-smooth-scrolling\n')
+
+    aur_install('guilded')
+    sudo_replace_string('/usr/share/applications/guilded.desktop',
+        '\nExec=/opt/Guilded/guilded %U\n',
+        '\nExec=/opt/Guilded/guilded --disable-smooth-scrolling %U\n')
 
     aur_install('librewolf-bin') # browser
     term(['unset', 'BROWSER', '&&', 'xdg-settings', 'set', 'default-web-browser', 'librewolf.desktop'])
