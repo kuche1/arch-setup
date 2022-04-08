@@ -7,11 +7,11 @@ upd = aur = 0
 try:
     upd = subprocess.check_output('checkupdates').count(b'\n')
 except subprocess.CalledProcessError:
-    pass
+    upd = 0
 
 try:
-    aur = subprocess.check_output('minq-checkupdates-aur').count(b'\n')
+    aur = subprocess.check_output(['paru', '-Qua']).count(b'\n')
 except subprocess.CalledProcessError:
-    pass
+    aur = 0
 
 print(f'{upd}|{aur} ')

@@ -282,6 +282,7 @@ EndSection
     pkg_install('qt5ct', 'qt6ct') # qt theme control panel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
         f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
+        f.write('MANGOHUD=1\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
