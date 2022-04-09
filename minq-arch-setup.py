@@ -251,7 +251,7 @@ EndSection
     pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
     # polybar widgets
     pkg_install('pacman-contrib')
-    aur_install('minq-checkupdates-aur')
+    aur_install('paru')
 
     # sxhkd dependencies
     pkg_install('caja', 'caja-open-terminal') # file manager
