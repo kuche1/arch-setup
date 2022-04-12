@@ -40,7 +40,7 @@ bspc config focus_follows_pointer true
 # tlauncher
 bspc rule -a ru-turikhay-tlauncher-bootstrap-Bootstrap state=floating
 # gnome calculator
-bspc rule -a Gnome-calculator state=floating
+bspc rule -a gnome-calculator state=floating
 # calendara
 bspc rule -a Io.elementary.calendar state=floating
 
