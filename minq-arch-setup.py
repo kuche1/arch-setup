@@ -256,7 +256,8 @@ EndSection
     # sxhkd dependencies
     pkg_install('caja', 'caja-open-terminal') # file manager
         #pkg_install('thunar')
-    pkg_install('wezterm', 'rofi', 'pulsemixer', 'spectacle', 'dunst')
+    pkg_install('wezterm', 'kitty') # terminal
+    pkg_install('rofi', 'pulsemixer', 'spectacle', 'dunst')
     pkg_install('xsecurelock')
 
     # bspwm dependencies
