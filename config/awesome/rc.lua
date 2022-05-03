@@ -217,6 +217,8 @@ awful.screen.connect_for_each_screen(function(s)
         	awful.widget.watch('bash -c "~/.config/polybar/scripts/get_mem.py"', 1),
         	wibox.widget.textbox(' | '),
         	awful.widget.watch('bash -c "~/.config/awesome/scripts/get_volume.sh"', 0.2),
+        	wibox.widget.textbox(' | '),
+        	awful.widget.watch('bash -c "~/.config/awesome/scripts/get_life.py"', 0.2),
         	wibox.widget.textbox(' |'),
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
