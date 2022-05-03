@@ -5,7 +5,8 @@
 
 # terminal emulator
 super + {Return,KP_Enter}
-	wezterm
+	kitty
+#	wezterm
 #	mate-terminal{ , }
 
 # program launcher

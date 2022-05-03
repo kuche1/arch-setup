@@ -243,7 +243,9 @@ EndSection
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # AMD
     pkg_install('lib32-mesa', 'vulkan-intel', 'lib32-vulkan-intel', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # intel
 
-    # DE essential
+    # TODO add awesome
+
+    # bspwm essentials
     pkg_install('bspwm', 'sxhkd')
     aur_install('polybar')
 
@@ -282,6 +284,7 @@ EndSection
     pkg_install('lxappearance-gtk3') # GTK theme control panel
     pkg_install('qt5ct', 'qt6ct') # qt theme control panel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
+        f.write('GTK_THEME=Adwaita-dark\n')
         f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
