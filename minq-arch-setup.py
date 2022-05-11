@@ -245,6 +245,8 @@ EndSection
 
     # TODO add awesome
 
+    # TODO add i3
+
     # bspwm essentials
     pkg_install('bspwm', 'sxhkd')
     aur_install('polybar')
@@ -288,6 +290,7 @@ EndSection
         f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
+        f.write('TERMINAL=kitty\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
