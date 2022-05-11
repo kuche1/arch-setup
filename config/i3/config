@@ -268,4 +268,4 @@ exec --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_
 # 3rd is title
 # 4th is horizontal or vertical indicator
 # 5th is border
-client.focused #116611 #116611 #fdf6e3 #009900
+client.focused #115511 #115511 #fdf6e3 #008800
