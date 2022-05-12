@@ -44,13 +44,14 @@ load {
 }
 
 memory {
-        format = "%used | %available"
+        format = "%used|%available"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
+        memory_used_method = "memavailable"
 }
 
 volume master {
-		format = "♪ (%devicename): %volume"
+		format = "♪(%devicename): %volume"
 #	    device = "default"
 #	    mixer_idx = "0"
 #	    mixer = "Master"
