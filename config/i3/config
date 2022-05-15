@@ -258,9 +258,39 @@ bar {
         strip_workspace_numbers yes
 }
 
-# autostart
+# set floating windows
+for_window [class="gnome-calculator"] floating enable
+
+#
+# exec - executes only on initial launch of i3
+# exec_always - executes on every restart of i3
+#
+
+# display
 exec --no-startup-id xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.00 --primary
-exec --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
+
+# keyboard
+exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
+
+# audio sharing
+# create sinks and virtual mic
+exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Sink sink_name=audio-sharing-sink channel_map=stereo
+exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Sink sink_name=CONFIG-ONLY-audio-sharing-sync-volume channel_map=stereo
+exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=nice-virtualmic channel_map=front-left,front-right
+# redirect real mic to virtual mic
+exec --no-startup-id pw-link alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback:capture_MONO nice-virtualmic:input_FL
+	# find this by running `pw-link -o`
+# redirect regular sink to lower volume sink
+exec --no-startup-id pw-link audio-sharing-sink:monitor_FL CONFIG-ONLY-audio-sharing-sync-volume:playback_FL
+exec --no-startup-id pw-link audio-sharing-sink:monitor_FR CONFIG-ONLY-audio-sharing-sync-volume:playback_FR
+# redirect lower volume sink to virtual mic
+exec --no-startup-id pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FL nice-virtualmic:input_FL
+exec --no-startup-id pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FR nice-virtualmic:input_FR
+# set volume on lower volume sink
+exec --no-startup-id pactl set-sink-volume CONFIG-ONLY-audio-sharing-sync-volume 50%
+# connect regular sink to headphones
+exec --no-startup-id pw-link audio-sharing-sink:monitor_FL alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FL
+exec --no-startup-id pw-link audio-sharing-sink:monitor_FR alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FR
 
 # colors
 # 1st border around title
