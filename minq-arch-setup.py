@@ -258,9 +258,8 @@ EndSection
     aur_install('paru')
 
     # sxhkd dependencies
-    pkg_install('caja', 'caja-open-terminal') # file manager
-        #pkg_install('thunar')
-    pkg_install('wezterm', 'kitty') # terminal
+    pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal') # file manager
+    pkg_install('wezterm') # terminal # kitty doesn't always behave over ssh
     pkg_install('rofi', 'pulsemixer', 'spectacle', 'dunst')
     pkg_install('xsecurelock')
 
@@ -290,7 +289,7 @@ EndSection
         f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
-        f.write('TERMINAL=kitty\n')
+        f.write('TERMINAL=wezterm\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
@@ -326,7 +325,7 @@ EndSection
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
     pkg_install('gnome-calculator') # calculator
-    pkg_install('qbittorrent') # torrent client
+    pkg_install('transmission-gtk') # torrent client # qbittorrent causes PC to lag
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
