@@ -9,6 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# set super and alt
 set $mod Mod4
 set $alt Mod1
 
@@ -19,6 +20,14 @@ font pango:monospace 8
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+
+# colors
+# 1st border around title
+# 2nd title bg and border (if 5th not set)
+# 3rd is title
+# 4th is horizontal or vertical indicator
+# 5th is border
+client.focused #115511 #115511 #fdf6e3 #008800
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -35,6 +44,16 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+## keybinds
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+bindsym Print exec spectacle --region
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -45,15 +64,9 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 bindsym XF86AudioNext exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
 bindsym XF86AudioPrev exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
-
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+KP_Enter exec i3-sensible-terminal
-
-# kill focused window
-bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
@@ -159,9 +172,6 @@ set $ws19k "Next"
 
 # switch to workspace
 #
-# all of these used to be like this
-#bindsym $mod+1 workspace number $ws1
-#
 bindsym $mod+$ws1k workspace $ws1
 bindsym $mod+$ws2k workspace $ws2
 bindsym $mod+$ws3k workspace $ws3
@@ -221,7 +231,6 @@ bindsym $mod+$alt+ctrl+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+$alt+ctrl+r reload
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 bindsym $mod+$alt+ctrl+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
@@ -259,8 +268,9 @@ bar {
         strip_workspace_numbers yes
 }
 
-# set floating windows
+# per-applicatino settings
 for_window [class="gnome-calculator"] floating enable
+for_window [class="spectacle"] sticky enable
 
 #
 # exec - executes only on initial launch of i3
@@ -274,30 +284,7 @@ exec --no-startup-id xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.0
 exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
 #bindsym $alt+Shift exec --no-startup-id $refresh_i3status
 
-# audio sharing
-# create sinks and virtual mic
-exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Sink sink_name=audio-sharing-sink channel_map=stereo
-exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Sink sink_name=CONFIG-ONLY-audio-sharing-sync-volume channel_map=stereo
-exec --no-startup-id pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=nice-virtualmic channel_map=front-left,front-right
-# redirect real mic to virtual mic
-exec --no-startup-id pw-link alsa_input.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.mono-fallback:capture_MONO nice-virtualmic:input_FL
-	# find this by running `pw-link -o`
-# redirect regular sink to lower volume sink
-exec --no-startup-id pw-link audio-sharing-sink:monitor_FL CONFIG-ONLY-audio-sharing-sync-volume:playback_FL
-exec --no-startup-id pw-link audio-sharing-sink:monitor_FR CONFIG-ONLY-audio-sharing-sync-volume:playback_FR
-# redirect lower volume sink to virtual mic
-exec --no-startup-id pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FL nice-virtualmic:input_FL
-exec --no-startup-id pw-link CONFIG-ONLY-audio-sharing-sync-volume:monitor_FR nice-virtualmic:input_FR
-# set volume on lower volume sink
-exec --no-startup-id pactl set-sink-volume CONFIG-ONLY-audio-sharing-sync-volume 50%
-# connect regular sink to headphones
-exec --no-startup-id pw-link audio-sharing-sink:monitor_FL alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FL
-exec --no-startup-id pw-link audio-sharing-sink:monitor_FR alsa_output.usb-C-Media_Electronics_Inc._Redragon_Gaming_Headset-00.analog-stereo:playback_FR
+exec_always --no-startup-id ~/.config/i3/create-virtual-sinks-for-audio-sharing.sh
 
-# colors
-# 1st border around title
-# 2nd title bg and border (if 5th not set)
-# 3rd is title
-# 4th is horizontal or vertical indicator
-# 5th is border
-client.focused #115511 #115511 #fdf6e3 #008800
+# on shutdown
+exec_always --no-startup-id ~/.config/i3/on_shutdown.py

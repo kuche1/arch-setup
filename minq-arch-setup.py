@@ -246,6 +246,7 @@ EndSection
     # TODO add awesome
 
     # TODO add i3
+    pkg_install('python-i3ipc')
 
     # bspwm essentials
     pkg_install('bspwm', 'sxhkd')
