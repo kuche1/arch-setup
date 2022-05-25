@@ -287,4 +287,4 @@ exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt
 exec_always --no-startup-id ~/.config/i3/create-virtual-sinks-for-audio-sharing.sh
 
 # on shutdown
-exec_always --no-startup-id ~/.config/i3/on_shutdown.py
+exec_always --no-startup-id ~/.config/i3/on_shutdown.py &
