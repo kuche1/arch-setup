@@ -148,6 +148,16 @@ set $ws16 "16:PUP"
 set $ws17 "17:DEL"
 set $ws18 "18:END"
 set $ws19 "19:PDN"
+set $ws20 "20:n0"
+set $ws21 "21:n1"
+set $ws22 "22:n2"
+set $ws23 "23:n3"
+set $ws24 "24:n4"
+set $ws25 "25:n5"
+set $ws26 "26:n6"
+set $ws27 "27:n7"
+set $ws28 "28:n8"
+set $ws29 "29:n9"
 
 # define workspace keys
 set $ws1k "1"
@@ -169,6 +179,16 @@ set $ws16k "Prior"
 set $ws17k "Delete"
 set $ws18k "End"
 set $ws19k "Next"
+set $ws20k "KP_Insert"
+set $ws21k "KP_End"
+set $ws22k "KP_Down"
+set $ws23k "KP_Next"
+set $ws24k "KP_Left"
+set $ws25k "KP_Begin"
+set $ws26k "KP_Right"
+set $ws27k "KP_Home"
+set $ws28k "KP_Up"
+set $ws29k "KP_Prior"
 
 # switch to workspace
 #
@@ -191,13 +211,16 @@ bindsym $mod+$ws16k workspace $ws16
 bindsym $mod+$ws17k workspace $ws17
 bindsym $mod+$ws18k workspace $ws18
 bindsym $mod+$ws19k workspace $ws19
-
-# switch to adjesent workspace
-bindsym $mod+bracketright workspace next
-bindsym $mod+bracketleft workspace prev
-
-# switch to last workspace
-bindsym $mod+grave workspace back_and_forth
+bindsym $mod+$ws20k workspace $ws20
+bindsym $mod+$ws21k workspace $ws21
+bindsym $mod+$ws22k workspace $ws22
+bindsym $mod+$ws23k workspace $ws23
+bindsym $mod+$ws24k workspace $ws24
+bindsym $mod+$ws25k workspace $ws25
+bindsym $mod+$ws26k workspace $ws26
+bindsym $mod+$ws27k workspace $ws27
+bindsym $mod+$ws28k workspace $ws28
+bindsym $mod+$ws29k workspace $ws29
 
 # move focused container to workspace
 bindsym $mod+Shift+$ws1k move container to workspace $ws1
@@ -219,6 +242,23 @@ bindsym $mod+Shift+$ws16k move container to workspace $ws16
 bindsym $mod+Shift+$ws17k move container to workspace $ws17
 bindsym $mod+Shift+$ws18k move container to workspace $ws18
 bindsym $mod+Shift+$ws19k move container to workspace $ws19
+bindsym $mod+Shift+$ws20k move container to workspace $ws20
+bindsym $mod+Shift+$ws21k move container to workspace $ws21
+bindsym $mod+Shift+$ws22k move container to workspace $ws22
+bindsym $mod+Shift+$ws23k move container to workspace $ws23
+bindsym $mod+Shift+$ws24k move container to workspace $ws24
+bindsym $mod+Shift+$ws25k move container to workspace $ws25
+bindsym $mod+Shift+$ws26k move container to workspace $ws26
+bindsym $mod+Shift+$ws27k move container to workspace $ws27
+bindsym $mod+Shift+$ws28k move container to workspace $ws28
+bindsym $mod+Shift+$ws29k move container to workspace $ws29
+
+# switch to adjesent workspace
+bindsym $mod+bracketright workspace next
+bindsym $mod+bracketleft workspace prev
+
+# switch to last workspace
+bindsym $mod+grave workspace back_and_forth
 
 # move focused container to adjesent workspace
 bindsym $mod+Shift+bracketright move container to workspace next

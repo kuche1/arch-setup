@@ -45,17 +45,17 @@ load {
 }
 
 memory {
-        format = "%used|%available"
+        format = "%available"
         threshold_degraded = "1G"
         format_degraded = "MEMORY < %available"
         memory_used_method = "memavailable"
 }
 
 volume master {
-		format = "♪(%devicename): %volume"
-#	    device = "default"
-#	    mixer_idx = "0"
-#	    mixer = "Master"
+	format = "♪(%devicename): %volume"
+#	 device = "default"
+#	 mixer_idx = "0"
+#	 mixer = "Master"
 }
 
 tztime local {
