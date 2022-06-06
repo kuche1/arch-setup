@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 
-netspeed_file="$(dirname $0)/net-speed.sh"
+HERE="$(dirname $0)"
+
+netspeed_file="$HERE/net-speed.sh"
 
 updates_regular="$(checkupdates | wc -l)"
 updates_aur="$(paru -Qua | wc -l)"
