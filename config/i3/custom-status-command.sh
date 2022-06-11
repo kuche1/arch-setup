@@ -13,7 +13,8 @@ do
 	read line
 
 	if [[ "$line" =~ ^'No battery | '.* ]]; then
-		line="$(echo $line | awk '{print substr($0, 15)}')"
+		#line="$(echo $line | awk '{print substr($0, 15)}')"
+		line="${line:13}"
 	fi
 
 	keyboard="$(xkblayout-state print \"%s\")"
