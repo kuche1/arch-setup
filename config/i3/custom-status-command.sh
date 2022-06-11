@@ -12,6 +12,10 @@ i3status | while :
 do
 	read line
 
+	if [[ "$line" =~ ^'No battery | '.* ]]; then
+		line="$(echo $line | awk '{print substr($0, 15)}')"
+	fi
+
 	keyboard="$(xkblayout-state print \"%s\")"
 	keyboard="${keyboard:1:-1}"
 
