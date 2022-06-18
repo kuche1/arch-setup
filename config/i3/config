@@ -129,6 +129,7 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
+set $ws0 "0:~"
 set $ws1 "1:1"
 set $ws2 "2:2"
 set $ws3 "3:3"
@@ -160,6 +161,7 @@ set $ws28 "28:n8"
 set $ws29 "29:n9"
 
 # define workspace keys
+set $ws0k "grave"
 set $ws1k "1"
 set $ws2k "2"
 set $ws3k "3"
@@ -191,7 +193,7 @@ set $ws28k "KP_Up"
 set $ws29k "KP_Prior"
 
 # switch to workspace
-#
+bindsym $mod+$ws0k workspace $ws0
 bindsym $mod+$ws1k workspace $ws1
 bindsym $mod+$ws2k workspace $ws2
 bindsym $mod+$ws3k workspace $ws3
@@ -223,6 +225,7 @@ bindsym $mod+$ws28k workspace $ws28
 bindsym $mod+$ws29k workspace $ws29
 
 # move focused container to workspace
+bindsym $mod+Shift+$ws0k move container to workspace $ws0
 bindsym $mod+Shift+$ws1k move container to workspace $ws1
 bindsym $mod+Shift+$ws2k move container to workspace $ws2
 bindsym $mod+Shift+$ws3k move container to workspace $ws3
@@ -258,7 +261,7 @@ bindsym $mod+bracketright workspace next
 bindsym $mod+bracketleft workspace prev
 
 # switch to last workspace
-bindsym $mod+grave workspace back_and_forth
+bindsym $mod+Tab workspace back_and_forth
 
 # move focused container to adjesent workspace
 bindsym $mod+Shift+bracketright move container to workspace next
