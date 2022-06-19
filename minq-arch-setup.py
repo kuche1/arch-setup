@@ -314,6 +314,7 @@ EndSection
     aur_install('minq-xvideos-git') # xvideos browser
     aur_install('minq-nhentai-git', 'python-minq-caching-thing-git') # nhentai browser
     pkg_install('trash-cli') # trash manager
+    pkg_install('streamlink') # enables watching streams (examples: yt, twitch)
 
     # additional programs
     aur_install('mangohud-common', 'mangohud', 'lib32-mangohud') # gayming overlay
