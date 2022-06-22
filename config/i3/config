@@ -311,9 +311,12 @@ bar {
         strip_workspace_numbers yes
 }
 
-# per-applicatino settings
+# per-applicatino settings [get class -> `xprop | grep CLASS`]
 for_window [class="gnome-calculator"] floating enable
-for_window [class="spectacle"] sticky enable
+#for_window [class="spectacle"] sticky enable
+assign [class="Guilded"] $ws27
+assign [class="discord"] $ws28
+assign [class="Transmission-gtk"] $ws26
 
 #
 # exec - executes only on initial launch of i3
