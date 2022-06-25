@@ -311,9 +311,17 @@ bar {
         strip_workspace_numbers yes
 }
 
-# per-applicatino settings [get class -> `xprop | grep CLASS`]
+# per-applicatino settings [get class -> `xprop | grep CLASS` or `xprop | grep NAME`]
+#
+# set floating
 for_window [class="gnome-calculator"] floating enable
+for_window [class="simple-3d-game"] floating enable # godot stuff
+for_window [title="Maggot baits"] floating enable
+#
+# set sticky
 #for_window [class="spectacle"] sticky enable
+#
+# set workspace
 assign [class="Guilded"] $ws27
 assign [class="discord"] $ws28
 assign [class="Transmission-gtk"] $ws26

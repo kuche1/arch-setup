@@ -40,7 +40,7 @@ disk "/" {
 }
 
 load {
-        format = "1=>%1min 5=>%5min"
+        format = "1=>%1min 5=>%5min 15=>%15min"
         max_threshold = "8,0"
 }
 
