@@ -299,6 +299,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    aur_install('bootiso') # safer dd alternative
     pkg_install('fd') # find alternative
     pkg_install('bat') # cat alternative
     pkg_install('bottom') # system monitor
