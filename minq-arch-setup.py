@@ -291,6 +291,12 @@ EndSection
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
         f.write('TERMINAL=wezterm\n')
+        f.write('\n')
+        f.write('# linux-xanmod variables\n')
+        f.write('_microarchitecture=15 # zen3\n')
+        f.write('use_numa=n # n==I don\'t have multiple processors')
+        f.write('#use_tracers=n # n==limits debugging and analysis of the kernel')
+        f.write('#_makenconfig=y # tweak kernel options prior to a build via nconfig')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
@@ -332,6 +338,7 @@ EndSection
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
+    pkg_install('songrec') # find a song by sample
 
     pkg_install('vlc') # video player
     # video
@@ -396,7 +403,7 @@ EndSection
     term(['sudo', 'update-grub'])
 
     # kernel
-    pkg_install('linux-zen', 'linux-zen-headers')
+    pkg_install('linux-zen', 'linux-zen-headers') # TODO provide alternative kernel
     term(['sudo', 'update-grub'])
 
     # vmware
