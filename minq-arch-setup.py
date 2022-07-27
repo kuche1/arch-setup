@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+# TODO make all into package/functionality pairs
+
 import subprocess
 import shlex
 import os
@@ -281,6 +283,8 @@ EndSection
 
         # TODO add i3 (is that all?)
         pkg_install('i3')
+        aur_install('xkblayout-state-git') # keyboard language switcher
+        pkg_install('python-psutil') # needed to determine weather laptop or not
         pkg_install('python-i3ipc')
 
     else:

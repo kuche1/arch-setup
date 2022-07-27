@@ -63,15 +63,20 @@ for iface in $ifaces; do
     echo "$recv" > "$file_recv"
     echo "$sent" > "$file_sent"
 
-	# TODO what if time_diff == 0 ?
-	recv=$(( $recv_diff / $time_diff ))
-	sent=$(( $sent_diff / $time_diff ))
+	if [ "$time_diff" = "0" ]; then
+		recv="ERR"
+		sent="ERR"
+		time_=0
+	else
+		recv=$(( $recv_diff / $time_diff ))
+		sent=$(( $sent_diff / $time_diff ))
 
-	time_="$time_diff"
-    recv=$(readable $recv)
-    sent=$(readable $sent)
+		time_="$time_diff"
+    	recv=$(readable $recv)
+    	sent=$(readable $sent)
+	fi
 
-    printf "$iface $recv↓ $sent↑ ${time_}s | "
+    printf "${iface} ${recv}↓ ${sent}↑ ${time_}s | "
 done
 
 echo ""
