@@ -368,7 +368,7 @@ EndSection
     pkg_install('ksysguard') # task manager
     pkg_install('songrec') # find a song by sample
 
-     # video player
+    # video player
     pkg_install('mpv')
     # # video
     # term('xdg-mime default vlc.desktop video/x-flv'.split(' '))
