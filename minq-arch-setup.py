@@ -1,7 +1,5 @@
 #! /usr/bin/env python3
 
-# TODO grub timeout
-
 import subprocess
 import shlex
 import os
@@ -32,6 +30,11 @@ PACMAN_CONF_PATH = '/etc/pacman.conf'
 PARU_CONF_PATH = '/etc/paru.conf'
 LIGHTDM_CONFIG_PATH = '/etc/lightdm/lightdm.conf'
 TLP_CONF_PATH = '/etc/tlp.conf'
+
+WMS = []
+WMS.append(WM_BSPWM := 'bspwm')
+WMS.append(WM_I3 := 'i3')
+WM = WM_I3 # let user select WM
 
 def warning(info:str):
     print('====================')
@@ -188,12 +191,14 @@ EndSection
         '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
     term(['sudo', 'pacman', '-Syuu'])
 
+    # TODO add chaotic AUR ?
+
     # color
     sudo_replace_string(PACMAN_CONF_PATH,
         '\n#Color\n',
         '\nColor\n')
 
-    # color
+    # verbose packages
     sudo_replace_string(PACMAN_CONF_PATH,
         '\n#VerbosePkgLists\n',
         '\nVerbosePkgLists\n')
@@ -208,6 +213,19 @@ EndSection
     sudo_replace_string(PARU_CONF_PATH,
         '\n#BottomUp\n',
         '\nBottomUp\n')
+
+    # # install yay if not present
+    # try:
+    #     term(['yay', '--version'])
+    # except subprocess.CalledProcessError:
+    #     old_cwd = os.getcwd()
+    #     os.chdir('/tmp/')
+    #     if os.path.isdir('./yay'):
+    #         shutil.rmtree('./yay')
+    #     term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
+    #     os.chdir('./yay')
+    #     term(['makepkg', '-si', '--noconfirm'])
+    #     os.chdir(old_cwd)
 
     # ssh stuff
     pkg_install('openssh') # TODO check for alternative
@@ -226,50 +244,48 @@ EndSection
     term(['git', 'config', '--global', 'merge.conflictstyle', 'diff3'])
     term(['git', 'config', '--global', 'diff.colorMoved', 'default'])
 
-    # install yay if not present
-    try:
-        term(['yay', '--version'])
-    except subprocess.CalledProcessError:
-        old_cwd = os.getcwd()
-        os.chdir('/tmp/')
-        if os.path.isdir('./yay'):
-            shutil.rmtree('./yay')
-        term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
-        os.chdir('./yay')
-        term(['makepkg', '-si', '--noconfirm'])
-        os.chdir(old_cwd)
-
     # video drivers
     pkg_install('lib32-mesa', 'vulkan-radeon', 'lib32-vulkan-radeon', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # AMD
     pkg_install('lib32-mesa', 'vulkan-intel', 'lib32-vulkan-intel', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # intel
 
-    # TODO add awesome
+    # wine deps
+    pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
 
-    # TODO add i3
-    pkg_install('python-i3ipc')
+    # window manager
+    if WM == WM_BSPWM:
 
-    # bspwm essentials
-    pkg_install('bspwm', 'sxhkd')
-    aur_install('polybar')
+        # bspwm essentials
+        pkg_install('bspwm', 'sxhkd')
+        aur_install('polybar')
 
-    # polybar fonts
-    pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
-    # polybar widgets
-    pkg_install('pacman-contrib')
-    aur_install('paru')
+        # sxhkd dependencies
+        pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal') # file manager
+        pkg_install('wezterm') # terminal # kitty doesn't always behave over ssh
+        pkg_install('rofi', 'pulsemixer', 'spectacle', 'dunst')
+        pkg_install('xsecurelock')
 
-    # sxhkd dependencies
-    pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal') # file manager
-    pkg_install('wezterm') # terminal # kitty doesn't always behave over ssh
-    pkg_install('rofi', 'pulsemixer', 'spectacle', 'dunst')
-    pkg_install('xsecurelock')
+        # polybar fonts
+        pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
 
-    # bspwm dependencies
-    pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
-    pkg_install('dex')
-    pkg_install('network-manager-applet')
-    #sudo pacman -S --needed nitrogen # wallpaper
-    #sudo pacman -S --needed picom # compositor
+        # polybar widgets
+        pkg_install('pacman-contrib')
+
+        # bspwm dependencies
+        pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
+        pkg_install('dex')
+        pkg_install('network-manager-applet')
+        #sudo pacman -S --needed nitrogen # wallpaper
+        #sudo pacman -S --needed picom # compositor
+
+    elif WM == WM_I3:
+
+        # TODO add i3 (is that all?)
+        pkg_install('i3')
+        pkg_install('python-i3ipc')
+
+    else:
+
+        raise Exception(f'Unknow WM: {WM}')
 
     # move the config files
     for (dir_, fols, fils) in os.walk(HERE + 'config'):
@@ -324,6 +340,17 @@ EndSection
     pkg_install('streamlink') # enables watching streams (examples: yt, twitch)
     aur_install('ani-cli-git') # anime watcher
 
+    # file manager
+    pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal')
+    # terminal
+    pkg_install('wezterm') # kitty doesn't always behave over ssh
+    # menu
+    pkg_install('rofi')
+    # screenshooter
+    pkg_install('spectacle')
+    # polkit
+    pkg_install('mate-polkit') # pkg_install('gnome-keyring')
+
     # additional programs
     aur_install('mangohud-common', 'mangohud', 'lib32-mangohud') # gayming overlay
     #aur_install('freezer-appimage') # music # commented due to slow download
@@ -341,17 +368,18 @@ EndSection
     pkg_install('ksysguard') # task manager
     pkg_install('songrec') # find a song by sample
 
-    pkg_install('vlc') # video player
-    # video
-    term('xdg-mime default vlc.desktop video/x-flv'.split(' '))
-    term('xdg-mime default vlc.desktop video/x-msvideo'.split(' '))
-    term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
-    term('xdg-mime default vlc.desktop video/mp4'.split(' '))
-    term('xdg-mime default vlc.desktop video/quicktime'.split(' '))
-    term('xdg-mime default vlc.desktop video/mpeg'.split(' '))
-    # audio
-    term('xdg-mime default vlc.desktop audio/mpeg'.split(' '))
-    term('xdg-mime default vlc.desktop audio/x-wav'.split(' '))
+     # video player
+    pkg_install('mpv')
+    # # video
+    # term('xdg-mime default vlc.desktop video/x-flv'.split(' '))
+    # term('xdg-mime default vlc.desktop video/x-msvideo'.split(' '))
+    # term('xdg-mime default vlc.desktop video/x-matroska'.split(' '))
+    # term('xdg-mime default vlc.desktop video/mp4'.split(' '))
+    # term('xdg-mime default vlc.desktop video/quicktime'.split(' '))
+    # term('xdg-mime default vlc.desktop video/mpeg'.split(' '))
+    # # audio
+    # term('xdg-mime default vlc.desktop audio/mpeg'.split(' '))
+    # term('xdg-mime default vlc.desktop audio/x-wav'.split(' '))
 
     pkg_install('nomacs') # image viewer
     term('xdg-mime default org.nomacs.ImageLounge.desktop image/gif'.split(' '))
@@ -364,7 +392,7 @@ EndSection
         '\nExec=/usr/bin/steam-runtime %U\n',
         '\nExec=/usr/bin/steam-runtime -silent -nochatui -nofriendsui %U\n')
 
-    # fuck this cancer shit
+    # TODO fuck this cancer shit
     pkg_install('discord')
     sudo_replace_string('/usr/share/applications/discord.desktop',
         '\nExec=/usr/bin/discord\n',
@@ -390,9 +418,6 @@ EndSection
             '\nSTOP_CHARGE_TRESH_BAT0=1\n',)
         service_start_and_enable('tlp')
 
-    # wine deps
-    pkg_install(*'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'.split(' '))
-
     # boot time
     aur_install('update-grub')
     sudo_replace_string(GRUB_CONF_PATH,
@@ -404,7 +429,7 @@ EndSection
     term(['sudo', 'update-grub'])
 
     # kernel
-    pkg_install('linux-zen', 'linux-zen-headers') # TODO provide alternative kernel
+    pkg_install('linux-zen', 'linux-zen-headers') # TODO provide alternative kernel ? xmonad
     term(['sudo', 'update-grub'])
 
     # vmware
