@@ -358,7 +358,7 @@ EndSection
     aur_install('ani-cli-git') # anime watcher
 
     # file manager
-    pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal')
+    pkg_install('thunar', 'gvfs') # pkg_install('caja', 'caja-open-terminal')
     # terminal
     pkg_install('wezterm') # kitty doesn't always behave over ssh
     # menu
