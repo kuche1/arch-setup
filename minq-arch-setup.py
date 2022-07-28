@@ -48,6 +48,7 @@ def warning(info:str):
 
 def term_raw(cmd:str):
     assert type(cmd) == str
+    print(f'Running: {cmd}')
     subprocess.run(cmd, shell=True, check=True)
 
 def term(cmds:list):
@@ -62,6 +63,7 @@ def term_yes(cmds:list): # TODO unused
 
 def pkg_force_install(*packages:list[str]):
     assert type(packages) in [list, tuple]
+    print(f'Force installing package(s): {packages}')
     term_yes(['sudo', 'pacman', '-S', '--needed'] + list(packages))
     # '--noconfirm'
 
@@ -69,6 +71,11 @@ def pkg_install(*packages:list[str]):
     assert type(packages) in [list, tuple]
     print(f'Installing package(s): {packages}')
     term(['sudo', 'pacman', '-S', '--needed', '--noconfirm'] + list(packages))
+
+def pkg_purge(*packages:list[str]):
+    assert type(packages) in [list, tuple]
+    print(f'Purging package(s): {packages}')
+    term(['sudo', 'pacman', '-Rns', '--noconfirm'] + list(packages))
 
 def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
     assert type(packages) != str
@@ -281,8 +288,11 @@ EndSection
 
     elif WM == WM_I3:
 
-        # TODO add i3 (is that all?)
-        pkg_install('i3')
+        try: pkg_purge('i3')
+        except: pass
+
+        pkg_install('i3') # TODO this still fails?
+
         aur_install('xkblayout-state-git') # keyboard language switcher
         pkg_install('python-psutil') # needed to determine weather laptop or not
         pkg_install('python-i3ipc')
