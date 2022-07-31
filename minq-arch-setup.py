@@ -163,11 +163,11 @@ def sudo_replace_string(file, to_replace, with_):
 
 def main():
 
-    if HERE != TARGET_HERE:
-        if not os.path.isdir(TARGET_HERE):
-            term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-        term([TARGET_HERE+REAL_FILE_NAME])
-        return
+    # if HERE != TARGET_HERE:
+    #     if not os.path.isdir(TARGET_HERE):
+    #         term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
+    #     term([TARGET_HERE+REAL_FILE_NAME])
+    #     return
 
     # debugging
     pkg_install('micro', 'xclip')
@@ -305,14 +305,22 @@ EndSection
         raise Exception(f'Unknow WM: {WM}')
 
     # move the config files
-    for (dir_, fols, fils) in os.walk(HERE + 'config'):
+    for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'config')):
         for fol in fols:
-            source = dir_+'/'+fol
-            target = os.path.expanduser('~/.config/') + fol
+            source = os.path.join(dir_, fol)
+            target = os.path.join(os.path.expanduser('~/.config/'), fol)
             #replace_folder(target, source)
             delete_folder(target)
             os.symlink(source, target)
         break
+    
+    # install the softwares # TODO untested
+    for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'software', 'bin')):
+        for fil in fils:
+            path = os.path.join(dir_, fil)
+            os.symlink(path, os.path.join('/usr/bin/', fil)) # TODO will require sudo
+
+    # TODO install services
 
     # unify theme # we could also install adwaita-qt and adwaita-qt6
     aur_install('adwaita-qt', 'adwaita-qt6')
@@ -346,7 +354,7 @@ EndSection
     pkg_install('duf') # better du
     pkg_install('lsd') # better ls
     pkg_install('poppler') # pdf combiner
-    pkg_install('pdftk') # pdf cutter
+    pkg_install('pdftk', 'bcprov', 'java-commons-lang') # pdf cutter
     aur_install('pirate-get-git') # torrent browser
     pkg_install('yt-dlp') # video downloader
     pkg_install('htop') # system monitor
@@ -357,8 +365,6 @@ EndSection
     pkg_install('streamlink') # enables watching streams (examples: yt, twitch)
     aur_install('ani-cli-git') # anime watcher
 
-    # file manager
-    pkg_install('thunar', 'gvfs') # pkg_install('caja', 'caja-open-terminal')
     # terminal
     pkg_install('wezterm') # kitty doesn't always behave over ssh
     # menu
@@ -379,15 +385,21 @@ EndSection
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
     pkg_install('gnome-calculator') # calculator
-    pkg_install('transmission-gtk') # torrent client # qbittorrent causes PC to lag
+    pkg_install('miniupnpc'); aur_install('transmission-sequential-gtk') # torrent client # qbittorrent causes PC to lag, also has a weird bug where it refuses to download torrents
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
     pkg_install('songrec') # find a song by sample
     aur_install('vscodium-bin') # IDE
 
+    # file manager
+    pkg_install('thunar', 'thunar-archive-plugin', 'gvfs') # pkg_install('caja', 'caja-open-terminal')
+    tmp = 'thunar.desktop'
+    term('xdg-mime', 'default',  tmp, 'inode/directory')
+
     # video player
-    pkg_install('mpv')
+    pkg_install('mpv') # pkg_install('vlc')
+    #tmp = 'mpv.desktop' # tmp = 'vlc.desktop' # TODO see the real name of `mpv.desktop`
     # # video
     # term('xdg-mime default vlc.desktop video/x-flv'.split(' '))
     # term('xdg-mime default vlc.desktop video/x-msvideo'.split(' '))

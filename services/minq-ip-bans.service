@@ -1,0 +1,10 @@
+[Unit]
+Description=Minq ip bans
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=minq-ip-bans
+
+[Install]
+WantedBy=multi-user.target

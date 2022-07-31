@@ -6,7 +6,7 @@ import os
 import subprocess
 import shlex
 
-HERE = os.path.dirname(__file__)
+HERE = os.path.dirname(os.path.realpath(__file__))
 IP_BANS_FILE = os.path.join(HERE, 'ips-to-ban')
 
 with open(IP_BANS_FILE, 'r') as f:

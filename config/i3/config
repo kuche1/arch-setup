@@ -335,9 +335,8 @@ for_window [class="SIGMA"] floating enable
 #for_window [class="spectacle"] sticky enable
 #
 # set workspace
-assign [class="Guilded"] $ws27
-assign [class="discord"] $ws28
-assign [class="Transmission-gtk"] $ws28
+#assign [class="Guilded"] $ws27
+#assign [class="discord"] $ws28
 
 #
 # exec - executes only on initial launch of i3
@@ -348,7 +347,7 @@ assign [class="Transmission-gtk"] $ws28
 exec --no-startup-id xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.00 --primary
 
 # open torrent but only if not laptop
-exec --no-startup-id python3 -c '__import__("sys").exit(__import__("psutil").sensors_battery())' && transmission-gtk
+exec --no-startup-id python3 -c '__import__("sys").exit(__import__("psutil").sensors_battery())' && transmission-gtk --minimized
 
 # keyboard
 exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
