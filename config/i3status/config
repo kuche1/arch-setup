@@ -40,8 +40,8 @@ disk "/" {
 }
 
 load {
-        format = "1=>%1min 5=>%5min 15=>%15min"
-#        max_threshold = "8.0" # sometimes 8.0 gives an error, and sometimes 8,0
+        format = "1->%1min 5->%5min 15->%15min"
+        max_threshold = "8.0" # sometimes 8.0 gives an error, and sometimes 8,0
 }
 
 memory {

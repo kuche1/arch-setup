@@ -68,6 +68,12 @@ bindsym XF86AudioPrev exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+KP_Enter exec i3-sensible-terminal
 
+# start browser
+bindsym $mod+b exec librewolf
+
+# start file explorer
+bindsym $mod+n exec thunar
+
 # start dmenu (a program launcher)
 #bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
@@ -267,18 +273,6 @@ bindsym $mod+Tab workspace back_and_forth
 bindsym $mod+Shift+bracketright move container to workspace next
 bindsym $mod+Shift+bracketleft move container to workspace prev
 
-# TODO none of these work
-# brightness keybindings
-bindsym $mod+b+0 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 1.0'
-bindsym $mod+b+9 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.9'
-bindsym $mod+b+8 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.8'
-bindsym $mod+b+7 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.7'
-bindsym $mod+b+6 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.6'
-bindsym $mod+b+5 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.5'
-bindsym $mod+b+4 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.4'
-bindsym $mod+b+3 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.3'
-bindsym $mod+b+2 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.2'
-bindsym $mod+b+1 exec_always --no-startup-id /usr/bin/env bash -c 'xrandr --output $(~/.config/i3/scripts/get-randr-output.sh) --brightness 0.1'
 
 # reload the configuration file
 bindsym $mod+$alt+ctrl+c reload
@@ -317,24 +311,23 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        # status_command i3status
-        status_command "$(readlink -f ~/.config/i3/custom-status-command.sh)"
+        #status_command i3status
+        #status_command "$(readlink -f ~/.config/i3/custom-status-command.sh)"
+        status_command i3blocks
         strip_workspace_numbers yes
 }
 
 # per-applicatino settings [get class -> `xprop | grep CLASS` or `xprop | grep NAME`]
 #
-# set floating
+## set floating
 for_window [class="gnome-calculator"] floating enable
 for_window [title="Maggot baits"] floating enable
-#godot stuff
-for_window [class="simple-3d-game"] floating enable
-for_window [class="SIGMA"] floating enable
-#
-# set sticky
+for_window [class="simple-3d-game"] floating enable # godot
+for_window [class="SIGMA"] floating enable          # godot
+for_window [class="steam_proton" title="^euphoria$"] floating enable
+## set sticky
 #for_window [class="spectacle"] sticky enable
-#
-# set workspace
+## set workspace
 #assign [class="Guilded"] $ws27
 #assign [class="discord"] $ws28
 
@@ -349,9 +342,14 @@ exec --no-startup-id xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144.0
 # open torrent but only if not laptop
 exec --no-startup-id python3 -c '__import__("sys").exit(__import__("psutil").sensors_battery())' && transmission-gtk --minimized
 
-# keyboard
-exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
-#bindsym $alt+Shift exec --no-startup-id $refresh_i3status
+# polkit
+exec --no-startup-id /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
+
+# keyboard language
+#bindsym $mod+i exec --no-startup-id setxkbmap -layout "us"
+#bindsym $mod+o exec --no-startup-id setxkbmap -layout "bg(phonetic)"
+#exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
+exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alts_toggle"
 
 # audio sharing sync
 exec_always --no-startup-id ~/.config/i3/create-virtual-sinks-for-audio-sharing.sh

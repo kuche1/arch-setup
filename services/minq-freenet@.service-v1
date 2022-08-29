@@ -1,0 +1,20 @@
+[Unit]
+Description=Minq freenet service for user %I
+After=network.target time-sync.target
+
+[Service]
+Type=forking
+#Type=simple
+User=%i
+WorkingDirectory=/home/%i/data/freenet
+PIDFile=/home/%i/data/freenet/Freenet.pid
+#ExecStart=/usr/bin/env /home/%i/data/freenet/run.sh console
+ExecStart=/usr/bin/env /home/%i/data/freenet/run.sh start
+ExecStop=/usr/bin/env /home/%i/data/freenet/run.sh stop
+TimeoutStopSec=300
+SendSIGKILL=no
+#SuccessExitStatus=3
+#RestartForceExitStatus=
+
+[Install]
+WantedBy=multi-user.target

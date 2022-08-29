@@ -76,7 +76,7 @@ for iface in $ifaces; do
     	sent=$(readable $sent)
 	fi
 
-    printf "${iface} ${recv}↓ ${sent}↑ ${time_}s | "
+    printf "${iface} ${recv}↓ ${sent}↑ ${time_}s"
 done
 
 echo ""

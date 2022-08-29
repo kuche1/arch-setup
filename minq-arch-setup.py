@@ -1,5 +1,7 @@
 #! /usr/bin/env python3
 
+# TODO stop and disable `firewalld.service`
+
 # TODO make all into package/functionality pairs
 
 import subprocess
@@ -332,12 +334,14 @@ EndSection
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
         f.write('TERMINAL=wezterm\n')
+        f.write('BROWSER=librewolf\n')
         f.write('\n')
         f.write('# linux-xanmod variables\n')
         f.write('_microarchitecture=15 # zen3\n')
-        f.write('use_numa=n # n==I don\'t have multiple processors')
-        f.write('#use_tracers=n # n==limits debugging and analysis of the kernel')
-        f.write('#_makenconfig=y # tweak kernel options prior to a build via nconfig')
+        f.write('use_numa=n # n==I don\'t have multiple processors\n')
+        f.write('#use_tracers=n # n==limits debugging and analysis of the kernel\n')
+        f.write('#_makenconfig=y # tweak kernel options prior to a build via nconfig\n')
+        f.write('\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
 
@@ -346,6 +350,7 @@ EndSection
     aur_install('paper-icon-theme')
 
     # terminal utilities
+    pkg_install('sysstat') # utilities for system stats
     aur_install('bootiso') # safer dd alternative
     pkg_install('fd') # find alternative
     pkg_install('bat') # cat alternative
@@ -391,6 +396,7 @@ EndSection
     pkg_install('ksysguard') # task manager
     pkg_install('songrec') # find a song by sample
     aur_install('vscodium-bin') # IDE
+    aur_install('rustdesk-bin') # remote desktop
 
     # file manager
     pkg_install('thunar', 'thunar-archive-plugin', 'gvfs') # pkg_install('caja', 'caja-open-terminal')
