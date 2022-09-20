@@ -295,12 +295,12 @@ EndSection
 
         try: pkg_purge('i3')
         except: pass
-
         pkg_install('i3') # TODO this still fails?
 
         aur_install('xkblayout-state-git') # keyboard language switcher
         pkg_install('python-psutil') # needed to determine weather laptop or not
         pkg_install('python-i3ipc')
+        pkg_install('dex') # autostart
 
     else:
 
