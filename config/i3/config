@@ -349,7 +349,7 @@ exec --no-startup-id /usr/lib/mate-polkit/polkit-mate-authentication-agent-1
 #bindsym $mod+i exec --no-startup-id setxkbmap -layout "us"
 #bindsym $mod+o exec --no-startup-id setxkbmap -layout "bg(phonetic)"
 #exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alt_shift_toggle"
-exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:alts_toggle"
+exec_always --no-startup-id setxkbmap -layout "us,bg(phonetic)" -option "grp:ctrls_toggle"
 
 # audio sharing sync
 exec_always --no-startup-id ~/.config/i3/create-virtual-sinks-for-audio-sharing.sh
