@@ -306,6 +306,7 @@ EndSection
 
         raise Exception(f'Unknow WM: {WM}')
 
+    raise Exception('not implemented') # I moved this to the 2nd repo # TODO also fix the home folder as well as the .config folder
     # move the config files
     for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'config')):
         for fol in fols:

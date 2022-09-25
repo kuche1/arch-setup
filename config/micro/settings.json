@@ -1,7 +1,0 @@
-{
-    "*.zig": {
-        "tabstospaces": true
-    },
-    "colorscheme": "atom-dark",
-    "softwrap": true
-}

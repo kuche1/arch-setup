@@ -21,7 +21,11 @@ for ip in cont.splitlines():
     if ip == '':
         continue
 
-    print(f'Blocking IP: {ip}')
-    subprocess.run(shlex.join(['sudo', 'iptables', '-A', 'INPUT', '-s', ip, '-j', 'DROP']), shell=True, check=True)
+    if ':' in ip:
+        ip, port = ip.split(':')
+        subprocess.run(shlex.join(['sudo', 'iptables', '-A', 'INPUT', '-s', ip, '--dport', port, '-j', 'DROP']), shell=True, check=True)
+    else:
+        print(f'Blocking IP: {ip}')
+        subprocess.run(shlex.join(['sudo', 'iptables', '-A', 'INPUT', '-s', ip, '-j', 'DROP']), shell=True, check=True)
 
 print('Done')
