@@ -301,6 +301,7 @@ EndSection
         pkg_install('python-psutil') # needed to determine weather laptop or not
         pkg_install('python-i3ipc')
         pkg_install('dex') # autostart
+        pkg_install('network-manager-applet')
 
     else:
 
