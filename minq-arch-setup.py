@@ -429,6 +429,7 @@ EndSection
     sudo_replace_string('/usr/share/applications/steam.desktop',
         '\nExec=/usr/bin/steam-runtime %U\n',
         '\nExec=/usr/bin/steam-runtime -silent -nochatui -nofriendsui %U\n')
+    pkg_install('lib32-libappindicator-gtk2') # makes it so that the taskbar menu follows the system theme
 
     # TODO fuck this cancer shit
     pkg_install('discord')
