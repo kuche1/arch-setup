@@ -303,6 +303,8 @@ EndSection
         pkg_install('dex') # autostart
         pkg_install('network-manager-applet')
 
+        pkg_install('xfce4-terminal')
+
     else:
 
         raise Exception(f'Unknow WM: {WM}')
@@ -335,14 +337,14 @@ EndSection
         f.write('QT_QPA_PLATFORMTHEME=qt5ct\n')
         f.write('MANGOHUD=1\n')
         f.write('EDITOR=micro\n')
-        f.write('TERMINAL=wezterm\n')
+        # f.write('TERMINAL=wezterm\n')
         f.write('BROWSER=librewolf\n')
         f.write('\n')
-        f.write('# linux-xanmod variables\n')
-        f.write('_microarchitecture=15 # zen3\n')
-        f.write('use_numa=n # n==I don\'t have multiple processors\n')
-        f.write('#use_tracers=n # n==limits debugging and analysis of the kernel\n')
-        f.write('#_makenconfig=y # tweak kernel options prior to a build via nconfig\n')
+        # f.write('# linux-xanmod variables\n')
+        # f.write('_microarchitecture=15 # zen3\n')
+        # f.write('use_numa=n # n==I don\'t have multiple processors\n')
+        # f.write('#use_tracers=n # n==limits debugging and analysis of the kernel\n')
+        # f.write('#_makenconfig=y # tweak kernel options prior to a build via nconfig\n')
         f.write('\n')
         name = f.name
     sudo_replace_file(ENVIRONMENT_PATH, name)
