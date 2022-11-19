@@ -387,7 +387,7 @@ EndSection
     aur_install('mangohud-common', 'mangohud', 'lib32-mangohud') # gayming overlay
     #aur_install('freezer-appimage') # music # commented due to slow download
     aur_install('nuclear-player-bin') # music
-    aur_install('mcomix-git') # .cbr file reader (Junji Ito)
+    aur_install('mcomix-git') # .cbr file reader (manga) (Junji Ito)
     pkg_install('gnome-disk-utility')
     pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
