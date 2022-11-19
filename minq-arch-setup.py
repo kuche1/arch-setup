@@ -27,7 +27,6 @@ WARNING_SLEEP = 0.5
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
-MOUSE_ACCEL_PATH = '/usr/share/X11/xorg.conf.d/90-mouse_accel.conf'
 GRUB_CONF_PATH = '/etc/default/grub'
 MAKEPKG_CONF_PATH = '/etc/makepkg.conf'
 PACMAN_CONF_PATH = '/etc/pacman.conf'
@@ -79,10 +78,14 @@ def pkg_purge(*packages:list[str]):
     print(f'Purging package(s): {packages}')
     term(['sudo', 'pacman', '-Rns', '--noconfirm'] + list(packages))
 
-def aur_install(*packages:list[str]): # TODO check if yay or paru, and if not both install
+def aur_install(*packages:list[str]):
     assert type(packages) != str
+    tool = 'yay'
+    try: term([tool, '--version'])
+    except subprocess.CalledProcessError: tool = 'paru'
+    term([tool, '--version']) # TODO install 1 of the 2 if this doesn't work
     print(f'Installing AUR package(s): {packages}')
-    term(['yay', '-S', '--needed', '--noconfirm'] + list(packages))
+    term([tool, '-S', '--needed', '--noconfirm'] + list(packages))
 
 def service_enable(name:str):
     assert type(name) == str
@@ -177,19 +180,6 @@ def main():
     # shell
     pkg_install('fish')
     term_raw('sudo chsh -s $(which fish) $USER') # TODO
-
-    # mouse accel
-    with tempfile.NamedTemporaryFile('w', delete=False) as f:
-        f.write('''
-Section "InputClass"
-        Identifier "Mouse With No Acceleration"
-        MatchDriver "libinput"
-        MatchIsPointer "yes"
-        Option "AccelProfile" "flat"
-EndSection
-''')
-        name = f.name
-    sudo_replace_file(MOUSE_ACCEL_PATH, name)
 
     # compilation threads
     sudo_replace_string(MAKEPKG_CONF_PATH,
@@ -308,28 +298,19 @@ EndSection
     else:
 
         raise Exception(f'Unknow WM: {WM}')
-
-    raise Exception('not implemented') # I moved this to the 2nd repo # TODO also fix the home folder as well as the .config folder
-    # move the config files
-    for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'config')):
-        for fol in fols:
-            source = os.path.join(dir_, fol)
-            target = os.path.join(os.path.expanduser('~/.config/'), fol)
-            #replace_folder(target, source)
-            delete_folder(target)
-            os.symlink(source, target)
-        break
-    
+   
     # install the softwares # TODO untested
-    for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'software', 'bin')):
-        for fil in fils:
-            path = os.path.join(dir_, fil)
-            os.symlink(path, os.path.join('/usr/bin/', fil)) # TODO will require sudo
+    # TODO tested and it fails
+    # for (dir_, fols, fils) in os.walk(os.path.join(HERE, 'software', 'bin')):
+    #     for fil in fils:
+    #         path = os.path.join(dir_, fil)
+    #         os.symlink(path, os.path.join('/usr/bin/', fil)) # TODO will require sudo
 
     # TODO install services
 
     # unify theme # we could also install adwaita-qt and adwaita-qt6
-    aur_install('adwaita-qt', 'adwaita-qt6')
+    #aur_install('adwaita-qt', 'adwaita-qt6')
+    pkg_install('adwaita-qt5', 'adwaita-qt6')
     pkg_install('lxappearance-gtk3') # GTK theme control panel
     pkg_install('qt5ct', 'qt6ct') # qt theme control panel
     with tempfile.NamedTemporaryFile('w', delete=False) as f:
@@ -405,7 +386,7 @@ EndSection
     # file manager
     pkg_install('thunar', 'thunar-archive-plugin', 'gvfs') # pkg_install('caja', 'caja-open-terminal')
     tmp = 'thunar.desktop'
-    term('xdg-mime', 'default',  tmp, 'inode/directory')
+    term(['xdg-mime', 'default',  tmp, 'inode/directory'])
 
     # video player
     pkg_install('mpv') # pkg_install('vlc')
