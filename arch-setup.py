@@ -174,6 +174,9 @@ def main():
     pkg_install('fish')
     term_raw('sudo chsh -s $(which fish) $USER') # TODO
 
+    # creates `makepkg.conf`
+    pkg_install('base-devel')
+
     # compilation threads
     sudo_replace_string(MAKEPKG_CONF_PATH,
         '\n#MAKEFLAGS="-j2"\n',
