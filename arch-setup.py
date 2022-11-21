@@ -15,7 +15,6 @@ import psutil
 import sys
 
 HERE = os.path.dirname(__file__) + '/'
-TARGET_HERE = os.path.expanduser('~/coding/minq-arch-setup') + '/'
 USERNAME = os.environ.get('USER')
 LAPTOP = psutil.sensors_battery() != None
 
@@ -167,12 +166,6 @@ def sudo_replace_string(file, to_replace, with_):
     sudo_replace_file(file, name)
 
 def main():
-
-    # if HERE != TARGET_HERE:
-    #     if not os.path.isdir(TARGET_HERE):
-    #         term(['git', 'clone', 'https://github.com/kuche1/minq-arch-setup.git', TARGET_HERE])
-    #     term([TARGET_HERE+REAL_FILE_NAME])
-    #     return
 
     # debugging
     pkg_install('micro', 'xclip')
