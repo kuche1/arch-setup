@@ -206,7 +206,18 @@ def main():
         '\nParallelDownloads = 5\n')
 
     # paru
-    pkg_install('paru')
+    try:
+        pkg_install('paru')
+    except subprocess.CalledProcessError:
+        old_cwd = os.getcwd()
+        os.chdir('/tmp/')
+        if os.path.isdir('./paru'):
+            shutil.rmtree('./paru')
+        term(['git', 'clone', 'https://aur.archlinux.org/paru.git'])
+        os.chdir('./paru')
+        term(['makepkg', '-si', '--noconfirm'])
+        os.chdir(old_cwd)
+
     sudo_replace_string(PARU_CONF_PATH,
         '\n#BottomUp\n',
         '\nBottomUp\n')
