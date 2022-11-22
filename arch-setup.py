@@ -315,6 +315,9 @@ def main():
 
     # TODO install services
 
+    # DHCP
+    pkg_install('dhcpcd')
+
     # unify theme # we could also install adwaita-qt and adwaita-qt6
     #aur_install('adwaita-qt', 'adwaita-qt6')
     pkg_install('adwaita-qt5', 'adwaita-qt6')
@@ -381,7 +384,6 @@ def main():
     pkg_install('gparted') # btrfs partition resize
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
-    pkg_install('gnome-calculator') # calculator
     pkg_install('miniupnpc'); aur_install('transmission-sequential-gtk') # torrent client # qbittorrent causes PC to lag, also has a weird bug where it refuses to download torrents
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')

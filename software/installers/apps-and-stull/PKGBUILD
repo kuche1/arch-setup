@@ -1,0 +1,135 @@
+
+pkgname="apps-and-stuff-local"
+pkgver=1
+pkgrel=1
+pkgdesc='This is what I use after a fresh xorgless arch install'
+arch=(any)
+license=('GPL')
+provides=("${pkgname}")
+
+prepare() {
+	echo 'Make sure to run the pre/post installation scripts!!!!!'
+	echo 'Press enter to continue'
+	read
+}
+
+depends=(
+	# terminal text editor
+	micro xclip
+
+	# shell
+	fish
+
+	# hdcp
+	dhcpcd
+
+	# someone is definetely going to need git
+	git git-delta
+	# java if anyone needs it
+	jre11-openjdk
+
+    # terminal utilities
+    sysstat # utilities for system stats
+    bootiso # safer dd alternative
+    fd # find alternative
+    bat # cat alternative
+    bottom # system monitor
+    tldr # man alternative
+    duf # better du
+    lsd # better ls
+    poppler # pdf combiner
+    pdftk bcprov java-commons-lang # pdf cutter
+    pirate-get-git # torrent browser
+    yt-dlp # video downloader
+    htop # system monitor
+    w3m # web browser
+    minq-xvideos-git # xvideos browser
+    minq-nhentai-git python-minq-caching-thing-git # nhentai browser
+    trash-cli # trash manager
+    streamlink # enables watching streams (examples: yt, twitch)
+    ani-cli-git # anime watcher
+
+	# amd video drivers
+	lib32-mesa vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader
+	# intel video drivers
+	#pkg_install('lib32-mesa', 'vulkan-intel', 'lib32-vulkan-intel', 'vulkan-icd-loader', 'lib32-vulkan-icd-loader') # intel
+
+	# wine dependencies
+	wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader
+
+	# DE utilities and apps
+	#wezterm # terminal with image support
+	mate-polkit # polkit
+	spectacle # screenshooter
+	mangohud lib32-mangohud # FPs ocunter
+	#freezer-appimage # music # commented due to slow download
+	#nuclear-player-bin # music
+	mcomix-git # .cbr file reader (manga) (Junji Ito)
+	gnome-disk-utility
+	baobab # disk usage analyzer
+	gparted # btrfs partition resize
+	ark # archive manager
+	#timeshift # backup
+	miniupnpc transmission-sequential-gtk
+	tigervnc
+	lutris
+	ksysguard
+	songrec # find a song by sample
+	vscodium-bin
+	rustdesk-bin
+	mpv # video player
+	nomacs # image viewer
+	steam lib32-libappindicator-gtk2 # `libappindicator` used to make it so taht the taskbar steam colors follow the system theme
+	discord
+	guilded
+	librewolf-bin
+	syncthing
+	#tlp # install if on laptop
+	lightdm lightdm-gtk-greeter # login manager
+
+	# file manager
+	thunar thunar-archive-plugin gvfs
+	#pkg_install('caja', 'caja-open-terminal')
+
+	# if BSPWM
+        # # bspwm essentials
+        # pkg_install('bspwm', 'sxhkd')
+        # aur_install('polybar')
+
+        # # sxhkd dependencies
+        # pkg_install('thunar') # pkg_install('caja', 'caja-open-terminal') # file manager
+        # pkg_install('wezterm') # terminal # kitty doesn't always behave over ssh
+        # pkg_install('rofi', 'pulsemixer', 'spectacle', 'dunst')
+        # pkg_install('xsecurelock')
+
+        # # polybar fonts
+        # pkg_install('ttc-iosevka', 'ttf-nerd-fonts-symbols')
+
+        # # polybar widgets
+        # pkg_install('pacman-contrib')
+
+        # # bspwm dependencies
+        # pkg_install('mate-polkit') ; pkg_install('gnome-keyring') # might as well also set this up
+        # pkg_install('dex')
+        # pkg_install('network-manager-applet')
+        # #sudo pacman -S --needed nitrogen # wallpaper
+        # #sudo pacman -S --needed picom # compositor
+
+	# if i3
+		i3-gaps i3blocks i3lock i3status # TODO we don't need all of these
+		xkblayout-state-git # keyboard language switcher
+		python-psutil # need to determine weather laptop or not
+		python-i3ipc
+		dex # autostart
+		network-manager-applet
+		xfce4-terminal
+		rofi # menu
+
+	# unified theme
+	lxappearance-gtk3 # gtk theme control panel
+	qt5ct qt6ct # qt theme control panel
+	# themes
+	adwaita-qt5 adwaita-qt6
+    gnome-themes-extra
+    paper-icon-theme
+)
