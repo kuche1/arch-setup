@@ -170,19 +170,19 @@ if __name__ == '__main__':
         sudo_replace_string(
             conf_file,
             '\n#Color\n',
-            '\nColor\n'
+            '\nColor\n',
         )
         # verbose packages
         sudo_replace_string(
             conf_file,
             '\n#VerbosePkgLists\n',
-            '\nVerbosePkgLists\n'
+            '\nVerbosePkgLists\n',
         )
         # parallel download
         sudo_replace_string(
             conf_file,
             '\n#ParallelDownloads = 5\n',
-            '\nParallelDownloads = 5\n'
+            '\nParallelDownloads = 5\n',
         )
     
     # paru
