@@ -143,11 +143,6 @@ def sudo_replace_string(file, to_replace, with_):
 if __name__ == '__main__':
     term_raw('sudo pacman -S --needed base-devel') # creates `makepkg.conf`
 
-    try:
-        pkg_purge('firewalld')
-    except subprocess.CalledProcessError:
-        pass
-
     # compilation threads
     sudo_replace_string(
         '/etc/makepkg.conf',

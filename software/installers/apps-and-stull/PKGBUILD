@@ -7,6 +7,8 @@ arch=(any)
 license=('GPL')
 provides=("${pkgname}")
 
+conflicts=(firewalld)
+
 prepare() {
 	echo 'Make sure to run the pre/post installation scripts!!!!!'
 	echo 'Press enter to continue'
