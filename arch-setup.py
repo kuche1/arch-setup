@@ -167,76 +167,81 @@ def sudo_replace_string(file, to_replace, with_):
 
 def main():
 
+    # DHCP
+    pkg_install('dhcpcd')
+
     # debugging
     pkg_install('micro', 'xclip')
 
     # shell
     pkg_install('fish')
-    term_raw('sudo chsh -s $(which fish) $USER') # TODO
+    term_raw('sudo chsh -s $(which fish) $USER')
 
-    # creates `makepkg.conf`
-    pkg_install('base-devel')
+    if True: # pacman stuff
 
-    # compilation threads
-    sudo_replace_string(MAKEPKG_CONF_PATH,
-        '\n#MAKEFLAGS="-j2"\n',
-        '\nMAKEFLAGS="-j$(nproc)"\n')
+        # creates `makepkg.conf`
+        pkg_install('base-devel')
 
-    # 32bit repo
-    sudo_replace_string(PACMAN_CONF_PATH,
-        '\n#[multilib]\n#Include = /etc/pacman.d/mirrorlist\n',
-        '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
-    term(['sudo', 'pacman', '-Syuu'])
+        # compilation threads
+        sudo_replace_string(MAKEPKG_CONF_PATH,
+            '\n#MAKEFLAGS="-j2"\n',
+            '\nMAKEFLAGS="-j$(nproc)"\n')
 
-    # TODO add chaotic AUR ?
+        # 32bit repo
+        sudo_replace_string(PACMAN_CONF_PATH,
+            '\n#[multilib]\n#Include = /etc/pacman.d/mirrorlist\n',
+            '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n')
+        term(['sudo', 'pacman', '-Syuu'])
 
-    # color
-    sudo_replace_string(PACMAN_CONF_PATH,
-        '\n#Color\n',
-        '\nColor\n')
+        # TODO add chaotic AUR ?
 
-    # verbose packages
-    sudo_replace_string(PACMAN_CONF_PATH,
-        '\n#VerbosePkgLists\n',
-        '\nVerbosePkgLists\n')
+        # color
+        sudo_replace_string(PACMAN_CONF_PATH,
+            '\n#Color\n',
+            '\nColor\n')
 
-    # parallel download
-    sudo_replace_string(PACMAN_CONF_PATH,
-        '\n#ParallelDownloads = 5\n',
-        '\nParallelDownloads = 5\n')
+        # verbose packages
+        sudo_replace_string(PACMAN_CONF_PATH,
+            '\n#VerbosePkgLists\n',
+            '\nVerbosePkgLists\n')
 
-    # paru
-    try:
-        pkg_install('paru')
-    except subprocess.CalledProcessError:
-        old_cwd = os.getcwd()
-        os.chdir('/tmp/')
-        if os.path.isdir('./paru'):
-            shutil.rmtree('./paru')
-        term(['git', 'clone', 'https://aur.archlinux.org/paru.git'])
-        os.chdir('./paru')
-        term(['makepkg', '-si', '--noconfirm'])
-        os.chdir(old_cwd)
+        # parallel download
+        sudo_replace_string(PACMAN_CONF_PATH,
+            '\n#ParallelDownloads = 5\n',
+            '\nParallelDownloads = 5\n')
 
-    sudo_replace_string(PARU_CONF_PATH,
-        '\n#BottomUp\n',
-        '\nBottomUp\n')
+        # paru
+        try:
+            pkg_install('paru')
+        except subprocess.CalledProcessError:
+            old_cwd = os.getcwd()
+            os.chdir('/tmp/')
+            if os.path.isdir('./paru'):
+                shutil.rmtree('./paru')
+            term(['git', 'clone', 'https://aur.archlinux.org/paru.git'])
+            os.chdir('./paru')
+            term(['makepkg', '-si', '--noconfirm'])
+            os.chdir(old_cwd)
 
-    # # install yay if not present
-    # try:
-    #     term(['yay', '--version'])
-    # except subprocess.CalledProcessError:
-    #     old_cwd = os.getcwd()
-    #     os.chdir('/tmp/')
-    #     if os.path.isdir('./yay'):
-    #         shutil.rmtree('./yay')
-    #     term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
-    #     os.chdir('./yay')
-    #     term(['makepkg', '-si', '--noconfirm'])
-    #     os.chdir(old_cwd)
+        # # install yay if not present
+        # try:
+        #     term(['yay', '--version'])
+        # except subprocess.CalledProcessError:
+        #     old_cwd = os.getcwd()
+        #     os.chdir('/tmp/')
+        #     if os.path.isdir('./yay'):
+        #         shutil.rmtree('./yay')
+        #     term(['git', 'clone', 'https://aur.archlinux.org/yay.git'])
+        #     os.chdir('./yay')
+        #     term(['makepkg', '-si', '--noconfirm'])
+        #     os.chdir(old_cwd)
+
+        sudo_replace_string(PARU_CONF_PATH,
+            '\n#BottomUp\n',
+            '\nBottomUp\n')
 
     # ssh stuff
-    pkg_install('openssh') # TODO check for alternative
+    pkg_install('openssh') # TODO? check for alternative
     if not (os.path.isfile(os.path.expanduser('~/.ssh/id_rsa')) and os.path.isfile(os.path.expanduser('~/.ssh/id_rsa.pub'))):
         term(['ssh-keygen', '-f', os.path.expanduser('~/.ssh/id_rsa'), '-N', ''])
     with open(os.path.expanduser('~/.ssh/config'), 'a') as f:
@@ -315,9 +320,6 @@ def main():
 
     # TODO install services
 
-    # DHCP
-    pkg_install('dhcpcd')
-
     # unify theme # we could also install adwaita-qt and adwaita-qt6
     #aur_install('adwaita-qt', 'adwaita-qt6')
     pkg_install('adwaita-qt5', 'adwaita-qt6')
@@ -384,7 +386,8 @@ def main():
     pkg_install('gparted') # btrfs partition resize
     pkg_install('ark') # archive manager
     aur_install('timeshift') # backup
-    pkg_install('miniupnpc'); aur_install('transmission-sequential-gtk') # torrent client # qbittorrent causes PC to lag, also has a weird bug where it refuses to download torrents
+    pkg_install('miniupnpc'); pkg_install('transmission-gtk') # aur_install('transmission-sequential-gtk')
+        # torrent client # qbittorrent causes PC to lag, also has a weird bug where it refuses to download torrents
     pkg_install('tigervnc') # vnc
     pkg_install('lutris')
     pkg_install('ksysguard') # task manager
@@ -453,20 +456,6 @@ def main():
             '\nSTOP_CHARGE_TRESH_BAT0=1\n',)
         service_start_and_enable('tlp')
 
-    # boot time
-    aur_install('update-grub')
-    sudo_replace_string(GRUB_CONF_PATH,
-        '\nGRUB_TIMEOUT=5\n',
-        '\nGRUB_TIMEOUT=1\n')
-    sudo_replace_string(GRUB_CONF_PATH,# TODO fix if not the first item
-        '\nGRUB_CMDLINE_LINUX_DEFAULT="quiet ',
-        '\nGRUB_CMDLINE_LINUX_DEFAULT="noquiet ')
-    term(['sudo', 'update-grub'])
-
-    # kernel
-    pkg_install('linux-zen', 'linux-zen-headers') # TODO provide alternative kernel ? xmonad
-    term(['sudo', 'update-grub'])
-
     # vmware
     if not LAPTOP:
         if not os.path.isdir(VMWARE_VMS_PATH):
@@ -495,6 +484,20 @@ def main():
     #    '\n#autologin-session=\n',
     #    '\nautologin-session=bspwm\n',)
     service_enable('lightdm')
+
+    # boot time
+    aur_install('update-grub')
+    sudo_replace_string(GRUB_CONF_PATH,
+        '\nGRUB_TIMEOUT=5\n',
+        '\nGRUB_TIMEOUT=1\n')
+    sudo_replace_string(GRUB_CONF_PATH,# TODO fix if not the first item
+        '\nGRUB_CMDLINE_LINUX_DEFAULT="quiet ',
+        '\nGRUB_CMDLINE_LINUX_DEFAULT="noquiet ')
+    term(['sudo', 'update-grub'])
+
+    if True: # kernel
+        pkg_install('linux-zen', 'linux-zen-headers') # TODO provide alternative kernel ? xmonad
+        term(['sudo', 'update-grub'])
 
     print('Syncing file system...')
     term(['sync'])
