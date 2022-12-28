@@ -1,7 +1,7 @@
 
 _pkgname=minq-ip-bans
 pkgname="${_pkgname}-git"
-pkgver=r265.80ef993c7575a425857c780cb6eb41c885d1e3f0
+pkgver=r266.dc63991339865f642000c9db0d33235b66b0cb4a
 pkgrel=1
 pkgdesc='IP banlist'
 arch=(any)
@@ -28,5 +28,6 @@ package() {
 	cp -rf * "${pkgdir}/opt/${pkgname}"
 	mkdir -p "${pkgdir}/usr/bin/"
 	ln -s "/opt/${pkgname}/minq-ip-bans.py" "${pkgdir}/usr/bin/${_pkgname}"
-	cp "${_pkgname}" "${pkgdir}/usr/lib/systemd/system/"
+	mkdir -p "${pkgdir}/usr/lib/systemd/system/"
+	cp "${_pkgname}.service" "${pkgdir}/usr/lib/systemd/system/"
 }
