@@ -1,30 +1,32 @@
 
 _pkgname=minq-ip-bans
 pkgname="${_pkgname}-git"
-pkgver=r51.a7dcc6d8820f85f72d52f87e9bd5c97512c213aa
+pkgver=r265.80ef993c7575a425857c780cb6eb41c885d1e3f0
 pkgrel=1
 pkgdesc='IP banlist'
 arch=(any)
-url="https://github.com/kuche1/${_pkgname}.git"
 license=('GPL')
-depends=(python python-beautifulsoup4 viu)
+# depends=(python python-beautifulsoup4 viu)
 makedepends=(git)
-optdepends=('wezterm: an example terminal that supports full image resolution'
-            'python-minq-caching-thing-git: needed for the beta version')
+# optdepends=('wezterm: an example terminal that supports full image resolution'
+#             'python-minq-caching-thing-git: needed for the beta version')
 provides=("${_pkgname}")
+
+url="https://github.com/kuche1/arch-setup.git"
 source=("git+$url")
 md5sums=("SKIP")
+_pkgdir=arch-setup/software/src/${_pkgname}
 
 pkgver() {
-	cd "${_pkgname}"
+	cd "${_pkgdir}"
 	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse HEAD)"
 }
 
 package() {
-	cd "${_pkgname}"
+	cd "${_pkgdir}"
 	mkdir -p "${pkgdir}/opt/${pkgname}"
 	cp -rf * "${pkgdir}/opt/${pkgname}"
 	mkdir -p "${pkgdir}/usr/bin/"
-	ln -s "/opt/${pkgname}/minq_nhentai.py" "${pkgdir}/usr/bin/${_pkgname}"
-	ln -s "/opt/${pkgname}/minq_nhentai_beta.py" "${pkgdir}/usr/bin/${_pkgname}-beta"
+	ln -s "/opt/${pkgname}/minq-ip-bans.py" "${pkgdir}/usr/bin/${_pkgname}"
+	cp "${_pkgname}" "${pkgdir}/usr/lib/systemd/system/"
 }
