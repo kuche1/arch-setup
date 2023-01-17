@@ -22,7 +22,7 @@ try: REAL_FILE_NAME = os.readlink(__file__)
 except OSError: REAL_FILE_NAME = __file__
 REAL_FILE_NAME = os.path.basename(REAL_FILE_NAME)
 
-WARNING_SLEEP = 0.5
+WARNING_SLEEP = 0.2
 VMWARE_VMS_PATH = os.path.expanduser('~/data/vmware')
 VMWARE_PREFERENCES_PATH = os.path.expanduser('~/.vmware/preferences')
 ENVIRONMENT_PATH = '/etc/environment'
@@ -37,6 +37,9 @@ WMS = []
 WMS.append(WM_BSPWM := 'bspwm')
 WMS.append(WM_I3 := 'i3')
 WM = WM_I3 # let user select WM
+
+INSTALL_VMWARE = False
+INSTALL_TIMESHIFT = False
 
 def warning(info:str):
     print('====================')
@@ -56,7 +59,7 @@ def term(cmds:list):
     cmd = shlex.join(cmds)
     term_raw(cmd)
 
-def term_yes(cmds:list): # TODO unused
+def term_yes(cmds:list):
     assert type(cmds) in (list, tuple)
     cmd = 'yes | ' + shlex.join(cmds)
     term_raw(cmd)
@@ -368,7 +371,7 @@ def main():
     aur_install('ani-cli-git') # anime watcher
 
     # terminal
-    pkg_install('wezterm') # kitty doesn't always behave over ssh
+    pkg_install('xfce4-terminal') # wezterm is gay # kitty doesn't always behave over ssh
     # menu
     pkg_install('rofi')
     # screenshooter
@@ -385,7 +388,7 @@ def main():
     pkg_install('baobab') # disk usage anal
     pkg_install('gparted') # btrfs partition resize
     pkg_install('ark') # archive manager
-    aur_install('timeshift') # backup
+    if INSTALL_TIMESHIFT: aur_install('timeshift') # backup
     pkg_install('miniupnpc'); pkg_install('transmission-gtk') # aur_install('transmission-sequential-gtk')
         # torrent client # qbittorrent causes PC to lag, also has a weird bug where it refuses to download torrents
     pkg_install('tigervnc') # vnc
@@ -457,7 +460,7 @@ def main():
         service_start_and_enable('tlp')
 
     # vmware
-    if not LAPTOP:
+    if (not LAPTOP) and INSTALL_VMWARE:
         if not os.path.isdir(VMWARE_VMS_PATH):
             os.makedirs(VMWARE_VMS_PATH)
         if is_btrfs(VMWARE_VMS_PATH):
