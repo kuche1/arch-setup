@@ -324,6 +324,8 @@ def main():
     # TODO install services
 
     # unify theme # we could also install adwaita-qt and adwaita-qt6
+        # themes can be found in `/usr/share/themes` (or at lean on ubuntu)
+        # docs on xsettings `https://wiki.archlinux.org/title/Xsettingsd`
     #aur_install('adwaita-qt', 'adwaita-qt6')
     pkg_install('adwaita-qt5', 'adwaita-qt6')
     pkg_install('lxappearance-gtk3') # GTK theme control panel
